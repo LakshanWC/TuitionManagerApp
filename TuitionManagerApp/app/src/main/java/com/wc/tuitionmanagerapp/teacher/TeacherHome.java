@@ -14,6 +14,8 @@ import com.wc.tuitionmanagerapp.R;
 
 public class TeacherHome extends AppCompatActivity {
 
+    public static String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
