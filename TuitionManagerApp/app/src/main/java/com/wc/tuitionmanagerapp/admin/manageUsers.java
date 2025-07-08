@@ -40,6 +40,13 @@ public class manageUsers extends AppCompatActivity {
             startActivity(intent);
         });
 
+        findViewById(R.id.btnViewUsers).setOnClickListener(v -> {
+            Intent intent = new Intent(manageUsers.this, viewUsers.class);
+            intent.putExtra("admin_username", adminUsername);
+            startActivity(intent);
+
+        });
+
 //        // Set up button click listeners
 //        findViewById(R.id.btnRegisterUser).setOnClickListener(v -> {
 //            // Start activity to register new user
