@@ -1,5 +1,6 @@
 package com.wc.tuitionmanagerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.wc.tuitionmanagerapp.admin.admin_menu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void redirectUser(String role) {
-        Toast.makeText(this, "Welcome " + role, Toast.LENGTH_SHORT).show();
-        // Start role-specific activity
+        if (role.equals("admin")) {
+            Intent intent = new Intent(MainActivity.this, admin_menu.class);
+            // Pass the username to admin menu
+            intent.putExtra("username", usernameEditText.getText().toString());
+            startActivity(intent);
+            finish(); // Close the login activity
+        }
+        // Add other role cases here when needed
     }
 }
