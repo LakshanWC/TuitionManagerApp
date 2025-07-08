@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome, Default User"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="25dp"
         android:paddingBottom="30dp"/>
 <LinearLayout
