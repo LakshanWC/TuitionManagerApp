@@ -13,13 +13,13 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
+            android:name=".admin.deleteUsers"
+            android:exported="false" />
+        <activity
             android:name=".admin.addCourse"
             android:exported="false" />
         <activity
             android:name=".admin.manageCourses"
-            android:exported="false" />
-        <activity
-            android:name=".admin.deleteUsers"
             android:exported="false" />
         <activity
             android:name=".admin.viewUsers"
