@@ -1,6 +1,9 @@
 package com.wc.tuitionmanagerapp.teacher;
 
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +15,8 @@ import com.wc.tuitionmanagerapp.R;
 
 public class Attendence extends AppCompatActivity {
 
+    private LinearLayout qrCard ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +27,9 @@ public class Attendence extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        qrCard = findViewById(R.id.qr_Card);
+        Animation wiggleAnimation = AnimationUtils.loadAnimation(this,R.anim.wiggle);
+        qrCard.startAnimation(wiggleAnimation);
     }
 }
