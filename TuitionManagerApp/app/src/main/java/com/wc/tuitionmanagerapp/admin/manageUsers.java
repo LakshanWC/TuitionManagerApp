@@ -62,11 +62,11 @@ public class manageUsers extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 //
-        findViewById(R.id.btnRemoveUser).setOnClickListener(v -> {
-            // Start activity to remove user
-            Intent intent = new Intent(manageUsers.this, deleteUsers.class);
-            intent.putExtra("admin_username", adminUsername);
-            startActivity(intent);
-        });
+//        findViewById(R.id.btnRemoveUser).setOnClickListener(v -> {
+//            // Start activity to remove user
+//            Intent intent = new Intent(manageUsers.this, RemoveUserActivity.class);
+//            intent.putExtra("admin_username", adminUsername);
+//            startActivity(intent);
+//        });
     }
 }

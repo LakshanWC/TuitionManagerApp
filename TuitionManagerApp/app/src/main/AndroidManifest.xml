@@ -13,9 +13,6 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
-            android:name=".admin.deleteUsers"
-            android:exported="false" />
-        <activity
             android:name=".admin.viewUsers"
             android:exported="false" />
         <activity
