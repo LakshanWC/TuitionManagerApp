@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,24 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
-
-        <!-- teacher activities-->
         <activity
-            android:name=".teacher.TeacherHome"
-            android:exported="false"/>
-        <activity
-            android:name=".teacher.Result"
-            android:exported="false"/>
-        <activity
-            android:name=".teacher.Attendence"
-            android:exported="false"/>
-        <activity
-            android:name=".teacher.CourseMaterial"
-            android:exported="false"/>
-        <activity
-            android:name=".teacher.Assignment"
-            android:exported="false"/>
-
+            android:name=".admin.deleteUsers"
+            android:exported="false" />
         <activity
             android:name=".admin.viewUsers"
             android:exported="false" />
