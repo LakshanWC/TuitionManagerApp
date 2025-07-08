@@ -1,5 +1,6 @@
 package com.wc.tuitionmanagerapp.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -13,16 +14,19 @@ public class admin_menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_menu);
 
-        // Get the username from intent extras
+        // Welcome message setup
         String username = getIntent().getStringExtra("username");
-
-        // Find the welcome text view
         TextView welcomeText = findViewById(R.id.welcome_text);
-
-        // Set the welcome message
         if (username != null && !username.isEmpty()) {
             welcomeText.setText("Welcome, " + username + " (Admin)");
             welcomeText.setVisibility(View.VISIBLE);
         }
+
+        // Manage Users button click
+        findViewById(R.id.btnManageUsers).setOnClickListener(v -> {
+            Intent intent = new Intent(admin_menu.this, manageUsers.class);
+            intent.putExtra("admin_username", username); // Pass admin username if needed
+            startActivity(intent);
+        });
     }
 }
