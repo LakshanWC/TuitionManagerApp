@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
 //    id("com.android.application")
+
     id("com.google.gms.google-services")
 
 }
@@ -40,6 +41,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
