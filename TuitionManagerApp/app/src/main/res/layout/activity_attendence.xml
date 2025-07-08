@@ -1,10 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".teacher.Attendence">
+    tools:context=".teacher.Attendence"
+    android:orientation="vertical"
+    android:padding="24dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- QR Scan Card -->
+    <LinearLayout
+        android:id="@+id/qr_Card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="20dp"
+        android:background="@drawable/card"
+        android:elevation="4dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/qr_code_scanner_48px"
+            android:contentDescription="QR Code Scanner" />
+    </LinearLayout>
+
+    <!-- STUDENT DETAILS GROUP -->
+    <LinearLayout
+        android:id="@+id/layoutStudentDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp">
+
+        <!-- Student ID -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student ID: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStudentId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="default text" />
+        </LinearLayout>
+
+        <!-- Student Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStudentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="default text" />
+        </LinearLayout>
+
+        <!-- Subject -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="default subject" />
+        </LinearLayout>
+
+        <!-- Date & Time -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--/--/---- --:--" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- BUTTON GROUP -->
+    <LinearLayout
+        android:id="@+id/layoutButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnMarkAttendance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mark Attendance"
+            android:backgroundTint="@color/positive_green"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:textStyle="bold" />
+
+        <!-- Clear + Cancel in a row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnClearAll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/negative_red"
+                android:textColor="@android:color/white"
+                android:text="Clear All" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="@android:color/white"
+                android:text="Home" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
