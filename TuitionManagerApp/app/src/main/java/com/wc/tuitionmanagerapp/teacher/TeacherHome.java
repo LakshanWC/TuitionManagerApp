@@ -3,9 +3,11 @@ package com.wc.tuitionmanagerapp.teacher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -14,7 +16,8 @@ import com.wc.tuitionmanagerapp.R;
 
 public class TeacherHome extends AppCompatActivity {
 
-    public static String userName;
+    private String userName;
+    private TextView txtWelcomMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,10 @@ public class TeacherHome extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        txtWelcomMessage = findViewById(R.id.txt_welcomeTxt);
+        userName = getIntent().getStringExtra("username");
+        txtWelcomMessage.setText("Welcome, "+userName);
     }
 
     public void goToAssignmentUi(View view){

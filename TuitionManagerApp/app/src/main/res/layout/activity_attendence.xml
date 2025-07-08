@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".teacher.Attendence"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="@color/white">
 
     <!-- QR Scan Card -->
     <LinearLayout
@@ -21,7 +22,8 @@
         android:elevation="4dp"
         android:layout_marginTop="100dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:onClick="scanQRCode">
 
         <ImageView
             android:layout_width="150dp"
@@ -37,7 +39,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="50dp">
 
         <!-- Student ID -->
         <LinearLayout
@@ -50,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Student ID: "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvStudentId"
@@ -70,7 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name: "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvStudentName"
@@ -90,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Subject: "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvSubject"
@@ -109,7 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time: "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvDateTime"
@@ -131,6 +138,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Mark Attendance"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:backgroundTint="@color/positive_green"
             android:textColor="@android:color/white"
             android:padding="12dp"
@@ -151,13 +160,15 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/negative_red"
                 android:textColor="@android:color/white"
-                android:text="Clear All" />
+                android:text="Clear All"
+                android:layout_marginLeft="10dp"/>
 
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_color"
                 android:textColor="@android:color/white"

@@ -1,6 +1,7 @@
 package com.wc.tuitionmanagerapp.teacher;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.wc.tuitionmanagerapp.R;
 
 public class Attendence extends AppCompatActivity {
@@ -31,5 +33,10 @@ public class Attendence extends AppCompatActivity {
         qrCard = findViewById(R.id.qr_Card);
         Animation wiggleAnimation = AnimationUtils.loadAnimation(this,R.anim.wiggle);
         qrCard.startAnimation(wiggleAnimation);
+    }
+
+    public void scanQRCode(View view){
+        IntentIntegrator myIntentIntegrator = new IntentIntegrator(Attendence.this);
+        myIntentIntegrator.initiateScan();
     }
 }
