@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "826644455620",
+    "project_id": "mad-cw-6f1ec",
+    "storage_bucket": "mad-cw-6f1ec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826644455620:android:f110354c2c38e942a06991",
+        "android_client_info": {
+          "package_name": "com.wc.tuitionmanagerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKdshq8x6Ji6j0xOFG3eHmvkeRz7Q0TqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
