@@ -14,9 +14,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.wc.tuitionmanagerapp.R;
 
 import java.util.HashMap;
@@ -83,7 +85,7 @@ public class registerUsers extends AppCompatActivity {
         // Get selected role
         int selectedId = roleRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedId);
-        String role = selectedRadioButton.getText().toString();
+        String role = selectedRadioButton.getText().toString().toLowerCase();
 
         // Validate inputs
         if (email.isEmpty() || username.isEmpty() || password.isEmpty() || phone.isEmpty()) {
@@ -101,29 +103,90 @@ public class registerUsers extends AppCompatActivity {
             return;
         }
 
-        // Create user data map
-        Map<String, Object> user = new HashMap<>();
-        user.put("email", email);
-        user.put("username", username);
-        user.put("password", password); // Note: In production, you should hash the password
-        user.put("phone", phone);
-        user.put("role", role.toLowerCase()); // Store role in lowercase
+        // Generate the next user ID based on role
+        generateNextUserId(role, new UserIdCallback() {
+            @Override
+            public void onUserIdGenerated(String userId) {
+                // Create user data map
+                Map<String, Object> user = new HashMap<>();
+                user.put("userId", userId);
+                user.put("email", email);
+                user.put("username", username);
+                user.put("password", password); // Note: In production, you should hash the password
+                user.put("phone", phone);
+                user.put("role", role);
 
-        // Add document to Firestore
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> {
-                    String successMessage = String.format(
-                            "User registered successfully!\nUsername: %s\nRole: %s",
-                            username, role
-                    );
-                    Toast.makeText(this, successMessage, Toast.LENGTH_LONG).show();
-                    showStatusMessage("Registration successful!", false);
-                    clearForm();
-                })
-                .addOnFailureListener(e -> {
-                    showStatusMessage("Registration failed: " + e.getMessage(), true);
-                });
+                // Add document to Firestore
+                db.collection("users")
+                        .add(user)
+                        .addOnSuccessListener(documentReference -> {
+                            String successMessage = String.format(
+                                    "User registered successfully!\nID: %s\nUsername: %s\nRole: %s",
+                                    userId, username, role
+                            );
+                            Toast.makeText(registerUsers.this, successMessage, Toast.LENGTH_LONG).show();
+                            showStatusMessage("Registration successful!", false);
+                            clearForm();
+                        })
+                        .addOnFailureListener(e -> {
+                            showStatusMessage("Registration failed: " + e.getMessage(), true);
+                        });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                showStatusMessage(errorMessage, true);
+            }
+        });
+    }
+
+    private interface UserIdCallback {
+        void onUserIdGenerated(String userId);
+        void onError(String errorMessage);
+    }
+
+    private void generateNextUserId(String role, UserIdCallback callback) {
+        // Determine the prefix based on role
+        String prefix;
+        switch (role) {
+            case "student":
+                prefix = "st";
+                break;
+            case "teacher":
+                prefix = "t";
+                break;
+            case "admin":
+                prefix = "adm";
+                break;
+            default:
+                callback.onError("Invalid role selected");
+                return;
+        }
+
+        // Reference to the counters document for this role
+        DocumentReference counterRef = db.collection("counters").document(role + "_counter");
+
+        // Run a transaction to safely increment the counter
+        db.runTransaction(transaction -> {
+            DocumentSnapshot snapshot = transaction.get(counterRef);
+            long count = 1;
+
+            if (snapshot.exists()) {
+                count = snapshot.getLong("count") + 1;
+            }
+
+            // Update the counter
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("count", count);
+            transaction.set(counterRef, updates, SetOptions.merge());
+
+            // Return the generated ID
+            return prefix + count;
+        }).addOnSuccessListener(userId -> {
+            callback.onUserIdGenerated(userId.toString());
+        }).addOnFailureListener(e -> {
+            callback.onError("Failed to generate user ID: " + e.getMessage());
+        });
     }
 
     private void showStatusMessage(String message, boolean isError) {

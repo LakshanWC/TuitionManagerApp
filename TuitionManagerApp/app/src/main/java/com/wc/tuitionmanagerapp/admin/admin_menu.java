@@ -28,5 +28,12 @@ public class admin_menu extends AppCompatActivity {
             intent.putExtra("admin_username", username); // Pass admin username if needed
             startActivity(intent);
         });
+
+        // Add this to onCreate() in admin_menu.java
+        findViewById(R.id.btnManageCourses).setOnClickListener(v -> {
+            Intent intent = new Intent(admin_menu.this, manageCourses.class);
+            intent.putExtra("admin_username", username); // Pass admin username if needed
+            startActivity(intent);
+        });
     }
 }
