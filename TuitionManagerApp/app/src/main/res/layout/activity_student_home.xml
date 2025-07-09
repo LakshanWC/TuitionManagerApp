@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    tools:context=".student.StudentHome">
+
+    <TextView
+        android:id="@+id/txtWelcomes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome, Student"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Row 1: Attendance & Assignments -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- Attendance Card -->
+        <LinearLayout
+            android:id="@+id/cardAttendance"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToAttendance">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@android:drawable/ic_menu_today" /> <!-- For attendance -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Attendance"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <!-- Assignments Card -->
+        <LinearLayout
+            android:id="@+id/cardAssignments"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToAssignments">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@android:drawable/ic_menu_edit" /> <!-- For assignments -->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Assignments"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 2: Results & Course Materials -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Results Card -->
+        <LinearLayout
+            android:id="@+id/cardResults"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToResults">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@android:drawable/ic_menu_agenda" /> <!-- For results -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Results"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <!-- Course Materials Card -->
+        <LinearLayout
+            android:id="@+id/cardCourseMaterials"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToCourseMaterials">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@android:drawable/ic_menu_view" /> <!-- For course materials -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Course Materials"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

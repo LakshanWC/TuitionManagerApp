@@ -11,6 +11,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wc.tuitionmanagerapp.admin.admin_menu;
+import com.wc.tuitionmanagerapp.student.StudentHome;
 import com.wc.tuitionmanagerapp.teacher.TeacherHome;
 
 public class MainActivity extends AppCompatActivity {
@@ -89,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
             Intent teacherHomeIntent = new Intent(MainActivity.this, TeacherHome.class);
             teacherHomeIntent.putExtra("username",usernameEditText.getText().toString());
             startActivity(teacherHomeIntent);
+            finish();
+        }
+        else if(role.equals("student")){
+            Intent studentHomeIntent = new Intent(MainActivity.this, StudentHome.class);
+            studentHomeIntent.putExtra("username",usernameEditText.getText().toString());
+            startActivity(studentHomeIntent);
             finish();
         }
         // Add other role cases here when needed
