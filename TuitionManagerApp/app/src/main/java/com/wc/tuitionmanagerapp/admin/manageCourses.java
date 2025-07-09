@@ -18,19 +18,19 @@ public class manageCourses extends AppCompatActivity {
            startActivity(intent);
         });
 
-//        findViewById(R.id.btnRemoveCourse).setOnClickListener(v -> {
-//            Intent intent = new Intent(manageCourses.this, RemoveCourseActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        findViewById(R.id.btnAssignTeachers).setOnClickListener(v -> {
-//            Intent intent = new Intent(manageCourses.this, AssignTeachersActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        findViewById(R.id.btnAssignStudents).setOnClickListener(v -> {
-//            Intent intent = new Intent(manageCourses.this, AssignStudentsActivity.class);
-//            startActivity(intent);
-//        });
+        findViewById(R.id.btnRemoveCourse).setOnClickListener(v -> {
+            Intent intent = new Intent(manageCourses.this, removeCourse.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnAssignTeachers).setOnClickListener(v -> {
+            Intent intent = new Intent(manageCourses.this, assignTeacher.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnAssignStudents).setOnClickListener(v -> {
+            Intent intent = new Intent(manageCourses.this, assignStudent.class);
+            startActivity(intent);
+        });
     }
 }
