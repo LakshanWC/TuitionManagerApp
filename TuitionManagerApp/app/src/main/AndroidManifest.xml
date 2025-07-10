@@ -29,6 +29,9 @@
             android:exported="false"/>
 
         <activity
+            android:name=".admin.manageReports"
+            android:exported="false" />
+        <activity
             android:name=".admin.assignStudent"
             android:exported="false" />
         <activity

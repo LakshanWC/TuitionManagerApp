@@ -73,4 +73,6 @@ dependencies {
     implementation("com.google.api-client:google-api-client-android:1.35.0")
     implementation("com.google.http-client:google-http-client-gson:1.43.3")
     implementation("com.google.apis:google-api-services-drive:v3-rev20250511-2.0.0")
+
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")//for report
 }

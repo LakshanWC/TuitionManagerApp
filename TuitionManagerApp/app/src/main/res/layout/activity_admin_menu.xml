@@ -5,113 +5,149 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".admin.admin_menu"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".admin.admin_menu">
+    android:gravity="center"
+    android:padding="6dp"
+    android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Admin Dashboard"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:textSize="16sp"
-        android:textColor="@color/primary_color"
-        android:visibility="gone"/>
+        android:text="Welcome, Admin"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:paddingBottom="30dp"/>
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/outline_account_circle_24" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <Button
-                android:id="@+id/btnManageUsers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Manage Users"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnManageCourses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Manage Courses"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnManageAssignments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assign Students to Teachers"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnViewReports"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="View Reports"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+    <!-- Row 1 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/card_manage_users"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:gravity="center_horizontal"
+            android:onClick="goToManageUsers">
 
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_people_24"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quick Actions"
+                android:layout_marginTop="12dp"
+                android:text="Manage Users"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <Button
-                android:id="@+id/btnAddUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add New User"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
-
-            <Button
-                android:id="@+id/btnGenerateReport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Generate Monthly Report"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                android:textColor="@android:color/black"
+                android:gravity="center"/>
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/card_manage_courses"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToManageCourses">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_library_books_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Manage Courses"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 2 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/card_assign_students"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToAssignStudents">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_connect_without_contact_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Assign Students"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card_view_reports"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToViewReports">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_bar_chart_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="View Reports"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
