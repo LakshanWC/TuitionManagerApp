@@ -1,23 +1,26 @@
 package com.wc.tuitionmanagerapp.teacher;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ShareCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.wc.tuitionmanagerapp.R;
 
 public class TeacherHome extends AppCompatActivity {
 
     private String userName;
+    private String userId;
     private TextView txtWelcomMessage;
+    private FirebaseFirestore firestoreDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +33,62 @@ public class TeacherHome extends AppCompatActivity {
             return insets;
         });
 
+        firestoreDB = FirebaseFirestore.getInstance();
         txtWelcomMessage = findViewById(R.id.txt_welcomeTxt);
+
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+
         userName = getIntent().getStringExtra("username");
-        txtWelcomMessage.setText("Welcome, "+userName);
+
+        if (userName != null) {
+            prefs.edit().putString("username", userName).apply();
+        } else {
+            userName = prefs.getString("username", "User");
+        }
+
+        userId = prefs.getString("userId", null);
+        if (userId == null) {
+            getTeacherIDbyUserName(); // and store it once fetched
+        }
+
+        txtWelcomMessage.setText("Welcome, " + userName);
     }
 
-    public void goToAssignmentUi(View view){
-        Intent assingmentIntent = new Intent(TeacherHome.this,Assignment.class);
-        startActivity(assingmentIntent);
+    public void goToAssignmentUi(View view) {
+        startActivity(new Intent(this, Assignment.class));
     }
-    public void goToCourseMaterialUi(View view){
-        Intent courseMaterialIntent = new Intent(TeacherHome.this,CourseMaterial.class);
-        startActivity(courseMaterialIntent);
+
+    public void goToCourseMaterialUi(View view) {
+        Intent intent = new Intent(this, CourseMaterial.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
     }
-    public void goToAttendenceUi(View view){
-        Intent attendenceIntent = new Intent(TeacherHome.this,Attendence.class);
-        startActivity(attendenceIntent);
+
+    public void goToAttendenceUi(View view) {
+        startActivity(new Intent(this, Attendence.class));
     }
-    public void goToReultUi(View view){
-        Intent resultIntent = new Intent(TeacherHome.this,Result.class);
-        startActivity(resultIntent);
+
+    public void goToReultUi(View view) {
+        startActivity(new Intent(this, Result.class));
+    }
+
+    private void getTeacherIDbyUserName() {
+        firestoreDB.collection("users")
+                .whereEqualTo("username", userName)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        String fetchedUserId = queryDocumentSnapshots.getDocuments()
+                                .get(0).getString("userId");
+                        if (fetchedUserId != null) {
+                            userId = fetchedUserId;
+
+                            // Save it for future use
+                            getSharedPreferences("user_prefs", MODE_PRIVATE).edit()
+                                    .putString("userId", userId)
+                                    .apply();
+                        }
+                    }
+                });
     }
 }
