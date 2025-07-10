@@ -5,34 +5,21 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.admin_menu"
+    tools:context=".admin.manageReports"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="6dp"
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/welcome_text"
+        android:id="@+id/tvAdminUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome, Admin"
+        android:text="Reports Dashboard"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:paddingBottom="30dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="10dp">
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/outline_account_circle_24" />
-    </LinearLayout>
 
     <!-- Row 1 -->
     <LinearLayout
@@ -40,29 +27,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="20dp"
         android:gravity="center">
 
         <LinearLayout
-            android:id="@+id/card_manage_users"
+            android:id="@+id/card_view_attendance"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/card"
             android:layout_marginEnd="16dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:onClick="goToManageUsers">
+            android:onClick="goToViewAttendance">
 
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/outline_people_24"/>
+                android:src="@drawable/outline_checklist_24"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Manage Users"
+                android:text="View Attendance"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
@@ -70,23 +56,23 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/card_manage_courses"
+            android:id="@+id/card_generate_reports"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:onClick="goToManageCourses">
+            android:onClick="goToGenerateReports">
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/outline_library_books_24" />
+                android:src="@drawable/outline_description_24" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Manage Courses"
+                android:text="Generate Reports"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
@@ -102,52 +88,35 @@
         android:gravity="center">
 
         <LinearLayout
-            android:id="@+id/card_assign_students"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:onClick="goToAssignStudents">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/outline_connect_without_contact_24" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Assign Students"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/card_view_reports"
+            android:id="@+id/card_student_distribution"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:onClick="goToViewReports">
+            android:onClick="goToStudentDistribution">
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/outline_bar_chart_24" />
+                android:src="@drawable/outline_pie_chart_24" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="View Reports"
+                android:text="Student Distribution"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvLoggedInAs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textStyle="italic"
+        android:textColor="@color/black"/>
 </LinearLayout>

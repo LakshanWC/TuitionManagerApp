@@ -4,36 +4,47 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.wc.tuitionmanagerapp.R;
 
 public class admin_menu extends AppCompatActivity {
+
+    private String userName;
+    private TextView welcomeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_menu);
 
-        // Welcome message setup
-        String username = getIntent().getStringExtra("username");
-        TextView welcomeText = findViewById(R.id.welcome_text);
-        if (username != null && !username.isEmpty()) {
-            welcomeText.setText("Welcome, " + username + " (Admin)");
-            welcomeText.setVisibility(View.VISIBLE);
-        }
+        welcomeText = findViewById(R.id.welcome_text);
+        userName = getIntent().getStringExtra("username");
+        welcomeText.setText("Welcome, " + userName + " (Admin)");
+    }
 
-        // Manage Users button click
-        findViewById(R.id.btnManageUsers).setOnClickListener(v -> {
-            Intent intent = new Intent(admin_menu.this, manageUsers.class);
-            intent.putExtra("admin_username", username); // Pass admin username if needed
-            startActivity(intent);
-        });
+    public void goToManageUsers(View view) {
+        Intent intent = new Intent(admin_menu.this, manageUsers.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
+    }
 
-        // Add this to onCreate() in admin_menu.java
-        findViewById(R.id.btnManageCourses).setOnClickListener(v -> {
-            Intent intent = new Intent(admin_menu.this, manageCourses.class);
-            intent.putExtra("admin_username", username); // Pass admin username if needed
-            startActivity(intent);
-        });
+    public void goToManageCourses(View view) {
+        Intent intent = new Intent(admin_menu.this, manageCourses.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
+    }
+
+    public void goToAssignStudents(View view) {
+        Intent intent = new Intent(admin_menu.this, assignStudent.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
+    }
+
+    public void goToViewReports(View view) {
+        Intent intent = new Intent(admin_menu.this, manageReports.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
     }
 }

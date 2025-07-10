@@ -5,66 +5,134 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".admin.manageCourses"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".admin.manageCourses">
+    android:gravity="center"
+    android:padding="6dp"
+    android:background="@color/white">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Course Management"
-        android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:paddingBottom="30dp"/>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+    <!-- Row 1 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/card_add_course"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:gravity="center_horizontal"
+            android:onClick="goToAddCourse">
 
-            <Button
-                android:id="@+id/btnAddCourse"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_add_circle_24"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Course"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnRemoveCourse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Remove Course"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnAssignTeachers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assign Teachers to Course"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-            <Button
-                android:id="@+id/btnAssignStudents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assign Students to Course"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:layout_marginTop="12dp"
+                android:text="Add Course"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center"/>
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/card_remove_course"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToRemoveCourse">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_remove_circle_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Remove Course"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 2 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/card_assign_teachers"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToAssignTeachers">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_school_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Assign Teachers"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card_assign_students"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToAssignStudents">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/outline_connect_without_contact_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Assign Students"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
