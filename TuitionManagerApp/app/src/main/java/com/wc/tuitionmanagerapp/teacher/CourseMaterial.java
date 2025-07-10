@@ -218,7 +218,7 @@ public class CourseMaterial extends AppCompatActivity {
         }
 
         if (!isDriveServiceReady) {
-            Toast.makeText(this, "Please sign in to Google Drive first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sign in to Google Drive..", Toast.LENGTH_SHORT).show();
             googleDriveHelper.signIn();
             return;
         }
@@ -271,6 +271,8 @@ public class CourseMaterial extends AppCompatActivity {
                             TextView myTextView = findViewById(R.id.selectedFileName);
                             myTextView.setText("");
                             findViewById(R.id.selectedFileLabel).setVisibility(View.GONE);
+
+                            setMaterialLink(courseName, folderId);
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -281,5 +283,36 @@ public class CourseMaterial extends AppCompatActivity {
                         Log.e("DriveUpload", "Upload failed: " + fileName, e);
                     });
         }
+    }
+
+    private void setMaterialLink(String courseName, String folderId) {
+        googleDriveHelper.getFolderShareableLink(folderId)
+                .addOnSuccessListener(folderLink -> {
+                    // Update the Firestore document for the course
+                    firestoreDB.collection("courses")
+                            .whereEqualTo("courseName", courseName)
+                            .get()
+                            .addOnSuccessListener(querySnapshot -> {
+                                if (!querySnapshot.isEmpty()) {
+                                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                                        firestoreDB.collection("courses")
+                                                .document(doc.getId())
+                                                .update("courseMaterials", folderLink)
+                                                .addOnSuccessListener(aVoid ->
+                                                        Toast.makeText(this, "Drive link added to course", Toast.LENGTH_SHORT).show())
+                                                .addOnFailureListener(e ->
+                                                        Log.e("FirestoreUpdate", "Failed to update courseMaterials", e));
+                                    }
+                                } else {
+                                    Log.e("FirestoreUpdate", "No matching course found for name: " + courseName);
+                                }
+                            })
+                            .addOnFailureListener(e ->
+                                    Log.e("FirestoreUpdate", "Error finding course: " + courseName, e));
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DriveLink", "Failed to get shareable link", e);
+                    Toast.makeText(this, "Failed to get shareable folder link", Toast.LENGTH_SHORT).show();
+                });
     }
 }

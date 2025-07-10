@@ -20,6 +20,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.Permission;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,25 @@ public class GoogleDriveHelper {
 
     private final Context context;
     private final Executor executor = Executors.newSingleThreadExecutor();
+    private GoogleSignInAccount googleAccount;
     private Drive driveService;
+
+    public Drive getDriveService() {
+        if (googleAccount == null) {
+            throw new IllegalStateException("Google account not signed in yet.");
+        }
+
+        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                context, Collections.singleton(DriveScopes.DRIVE_FILE)
+        );
+        credential.setSelectedAccount(googleAccount.getAccount());
+
+        return new Drive.Builder(
+                new NetHttpTransport(),
+                new GsonFactory(),
+                credential
+        ).setApplicationName("TuitionManagerApp").build();
+    }
 
     public GoogleDriveHelper(Context context) {
         this.context = context;
@@ -122,4 +141,27 @@ public class GoogleDriveHelper {
             return folder.getId();
         });
     }
+
+    public Task<String> getFolderShareableLink(String folderId) {
+        return Tasks.call(executor, () -> {
+            try {
+                // Set permission to make the folder accessible to anyone with the link
+                Permission userPermission = new Permission()
+                        .setType("anyone")
+                        .setRole("reader");
+
+                // Apply the permission to the folder
+                driveService.permissions().create(folderId, userPermission)
+                        .setFields("id")
+                        .execute();
+
+                // Return the shareable link
+                return "https://drive.google.com/drive/folders/" + folderId;
+            } catch (Exception e) {
+                Log.e(TAG, "Error creating shareable link", e);
+                throw e; // Re-throw to trigger onFailure in the calling code
+            }
+        });
+    }
+
 }
