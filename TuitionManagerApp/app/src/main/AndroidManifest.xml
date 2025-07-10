@@ -34,6 +34,9 @@
             android:exported="false"/>
         
         <activity
+            android:name=".admin.courseDistributionReport"
+            android:exported="false" />
+        <activity
             android:name=".admin.manageReports"
             android:exported="false" />
         <activity
@@ -90,6 +93,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
