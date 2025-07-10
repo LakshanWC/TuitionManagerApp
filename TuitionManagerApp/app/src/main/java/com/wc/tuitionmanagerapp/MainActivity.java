@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton loginButton;
     private RadioButton adminRadio, teacherRadio, studentRadio;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(teacherHomeIntent);
             finish();
         }
+        // In MainActivity.java redirectUser method
         else if(role.equals("student")){
-            Intent studentHomeIntent = new Intent(MainActivity.this, StudentHome.class);
-            studentHomeIntent.putExtra("username",usernameEditText.getText().toString());
-            startActivity(studentHomeIntent);
+            Intent teacherHomeIntent = new Intent(MainActivity.this, StudentHome.class);
+            teacherHomeIntent.putExtra("username",usernameEditText.getText().toString());
+            startActivity(teacherHomeIntent);
             finish();
         }
-        // Add other role cases here when needed
     }
 }

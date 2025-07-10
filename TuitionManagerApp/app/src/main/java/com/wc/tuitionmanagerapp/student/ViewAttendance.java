@@ -1,26 +1,28 @@
 package com.wc.tuitionmanagerapp.student;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.wc.tuitionmanagerapp.R;
-import java.util.ArrayList;
+import com.wc.tuitionmanagerapp.adapters.AttendanceAdapter;
+import com.wc.tuitionmanagerapp.models.Attendance;
+
 import java.util.List;
 
 public class ViewAttendance extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private AttendanceAdapter adapter;
-    private List<AttendanceRecord> attendanceList;
-    private TextView tvEmpty;
+    private FirebaseFirestore db;
+    private SwipeRefreshLayout swipeRefresh;
+    private String studentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,40 +31,44 @@ public class ViewAttendance extends AppCompatActivity {
 
         // Initialize views
         recyclerView = findViewById(R.id.recyclerViewAttendance);
-        tvEmpty = findViewById(R.id.tvEmpty);
-        attendanceList = new ArrayList<>();
-
-        // Setup RecyclerView
+        swipeRefresh = findViewById(R.id.swipeRefresh);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AttendanceAdapter(attendanceList);
-        recyclerView.setAdapter(adapter);
 
-        // Fetch attendance data from Firestore
-        fetchAttendance();
+        // Get studentId from intent
+        studentId = getIntent().getStringExtra("studentId");
+        if (studentId == null) {
+            Toast.makeText(this, "Student ID not found!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        db = FirebaseFirestore.getInstance();
+        fetchAttendanceData();
+
+        // Pull-to-refresh
+        swipeRefresh.setOnRefreshListener(this::fetchAttendanceData);
     }
 
-    private void fetchAttendance() {
-        String studentId = "st123"; // Test with hardcoded ID first
-        Log.d("ATTENDANCE", "Fetching data for student: " + studentId);
-
-        FirebaseFirestore.getInstance()
-                .collection("attendance")
+    private void fetchAttendanceData() {
+        swipeRefresh.setRefreshing(true);
+        db.collection("attendance")
                 .whereEqualTo("studentId", studentId)
                 .get()
                 .addOnCompleteListener(task -> {
+                    swipeRefresh.setRefreshing(false);
                     if (task.isSuccessful()) {
-                        Log.d("ATTENDANCE", "Got " + task.getResult().size() + " records");
-                        attendanceList.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("ATTENDANCE", document.getId() + " => " + document.getData());
-                            AttendanceRecord record = document.toObject(AttendanceRecord.class);
-                            attendanceList.add(record);
+                        List<Attendance> attendanceList = task.getResult().toObjects(Attendance.class);
+                        if (attendanceList.isEmpty()) {
+                            findViewById(R.id.tvEmpty).setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            findViewById(R.id.tvEmpty).setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            adapter = new AttendanceAdapter(attendanceList);
+                            recyclerView.setAdapter(adapter);
                         }
-                        adapter.notifyDataSetChanged();
-                        tvEmpty.setVisibility(attendanceList.isEmpty() ? View.VISIBLE : View.GONE);
                     } else {
-                        Log.e("ATTENDANCE", "Error loading attendance", task.getException());
-                        Toast.makeText(this, "Error loading attendance", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

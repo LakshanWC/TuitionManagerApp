@@ -11,7 +11,7 @@
     tools:context=".student.StudentHome">
 
     <TextView
-        android:id="@+id/txtWelcomes"
+        android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome, Student"
