@@ -71,4 +71,5 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
     implementation("com.google.api-client:google-api-client-android:2.0.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
