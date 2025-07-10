@@ -66,13 +66,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-messaging:23.3.1") // For notifications
-
-    // Google Sign-In
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-    // Google API Client and Drive API
-    implementation("com.google.api-client:google-api-client-android:1.35.0")
-    implementation("com.google.http-client:google-http-client-gson:1.43.3")
-    implementation("com.google.apis:google-api-services-drive:v3-rev20250511-2.0.0")
-
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")//for report
+   // implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")//for report
 }
