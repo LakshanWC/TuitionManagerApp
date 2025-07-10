@@ -33,40 +33,59 @@ public class manageUsers extends AppCompatActivity {
             tvAdminUsername.setText("Logged in as: " + adminUsername);
         }
 
-        // In manageUsers.java, update the btnRegisterUser click listener:
-        findViewById(R.id.btnRegisterUser).setOnClickListener(v -> {
-            Intent intent = new Intent(manageUsers.this, registerUsers.class);
-            intent.putExtra("admin_username", adminUsername);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.btnViewUsers).setOnClickListener(v -> {
-            Intent intent = new Intent(manageUsers.this, viewUsers.class);
-            intent.putExtra("admin_username", adminUsername);
-            startActivity(intent);
-
-        });
-
-//        // Set up button click listeners
+//        // In manageUsers.java, update the btnRegisterUser click listener:
 //        findViewById(R.id.btnRegisterUser).setOnClickListener(v -> {
-//            // Start activity to register new user
-//            Intent intent = new Intent(manageUsers.this, RegisterUserActivity.class);
+//            Intent intent = new Intent(manageUsers.this, registerUsers.class);
 //            intent.putExtra("admin_username", adminUsername);
 //            startActivity(intent);
 //        });
 //
 //        findViewById(R.id.btnViewUsers).setOnClickListener(v -> {
-//            // Start activity to view all users
-//            Intent intent = new Intent(manageUsers.this, ViewUsersActivity.class);
+//            Intent intent = new Intent(manageUsers.this, viewUsers.class);
+//            intent.putExtra("admin_username", adminUsername);
+//            startActivity(intent);
+//
+//        });
+//
+////        // Set up button click listeners
+////        findViewById(R.id.btnRegisterUser).setOnClickListener(v -> {
+////            // Start activity to register new user
+////            Intent intent = new Intent(manageUsers.this, RegisterUserActivity.class);
+////            intent.putExtra("admin_username", adminUsername);
+////            startActivity(intent);
+////        });
+////
+////        findViewById(R.id.btnViewUsers).setOnClickListener(v -> {
+////            // Start activity to view all users
+////            Intent intent = new Intent(manageUsers.this, ViewUsersActivity.class);
+////            intent.putExtra("admin_username", adminUsername);
+////            startActivity(intent);
+////        });
+////
+//        findViewById(R.id.btnRemoveUser).setOnClickListener(v -> {
+//            // Start activity to remove user
+//            Intent intent = new Intent(manageUsers.this, deleteUsers.class);
 //            intent.putExtra("admin_username", adminUsername);
 //            startActivity(intent);
 //        });
-//
-        findViewById(R.id.btnRemoveUser).setOnClickListener(v -> {
-            // Start activity to remove user
-            Intent intent = new Intent(manageUsers.this, deleteUsers.class);
-            intent.putExtra("admin_username", adminUsername);
-            startActivity(intent);
-        });
+    }
+
+    // Add these methods to your existing manageUsers class
+    public void goToRegisterUser(View view) {
+        Intent intent = new Intent(manageUsers.this, registerUsers.class);
+        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+        startActivity(intent);
+    }
+
+    public void goToViewUsers(View view) {
+        Intent intent = new Intent(manageUsers.this, viewUsers.class);
+        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+        startActivity(intent);
+    }
+
+    public void goToRemoveUser(View view) {
+        Intent intent = new Intent(manageUsers.this, deleteUsers.class);
+        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+        startActivity(intent);
     }
 }
