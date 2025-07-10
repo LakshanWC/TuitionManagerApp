@@ -10,5 +10,19 @@
         android:layout_height="wrap_content"
         android:text="Attendance Records"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAttendance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No attendance records found"
+        android:gravity="center"
+        android:visibility="gone"/>
 </LinearLayout>

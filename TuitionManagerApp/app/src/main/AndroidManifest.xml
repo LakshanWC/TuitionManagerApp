@@ -16,6 +16,18 @@
             android:name=".student.StudentHome"
             android:exported="false" />
         <activity
+            android:name=".student.ViewAttendance"
+            android:exported="false" />
+        <activity
+            android:name=".student.ViewAssignments"
+            android:exported="false" />
+        <activity
+            android:name=".student.ViewCourseMaterials"
+            android:exported="false" />
+        <activity
+            android:name=".student.ViewResults"
+            android:exported="false" />
+        <activity
             android:name=".admin.deleteUsers"
             android:exported="false" />
         <activity
