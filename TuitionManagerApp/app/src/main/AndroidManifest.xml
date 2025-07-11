@@ -17,23 +17,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".teacher.DeleteCourseMaterials"
+            android:exported="false" />
+        <activity
+            android:name=".teacher.ManageCourseMaterials"
+            android:exported="false" />
         <activity
             android:name=".teacher.TeacherHome"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".teacher.Attendence"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".teacher.Assignment"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".teacher.CourseMaterial"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".teacher.Result"
-            android:exported="false"/>
-        
+            android:exported="false" />
         <activity
             android:name=".admin.courseDistributionReport"
             android:exported="false" />
