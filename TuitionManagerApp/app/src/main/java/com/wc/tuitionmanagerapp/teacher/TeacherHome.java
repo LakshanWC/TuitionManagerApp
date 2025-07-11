@@ -13,14 +13,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.wc.tuitionmanagerapp.R;
 
 public class TeacherHome extends AppCompatActivity {
 
     private String userName;
     private String userId;
-    private TextView txtWelcomMessage;
+    private TextView txtWelcomeMessage;
     private FirebaseFirestore firestoreDB;
+    private GoogleDriveHelper googleDriveHelper;
+    private boolean isDriveServiceReady = false;
+
+    private static final int REQUEST_CODE_SIGN_IN = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +39,11 @@ public class TeacherHome extends AppCompatActivity {
         });
 
         firestoreDB = FirebaseFirestore.getInstance();
-        txtWelcomMessage = findViewById(R.id.txt_welcomeTxt);
+        txtWelcomeMessage = findViewById(R.id.txt_welcomeTxt);
 
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
 
         userName = getIntent().getStringExtra("username");
-
         if (userName != null) {
             prefs.edit().putString("username", userName).apply();
         } else {
@@ -47,11 +51,17 @@ public class TeacherHome extends AppCompatActivity {
         }
 
         userId = prefs.getString("userId", null);
+
+        // If userId not stored, fetch from Firestore first
         if (userId == null) {
-            getTeacherIDbyUserName(); // and store it once fetched
+            getTeacherIDbyUserName(() -> {
+                // After userId fetched, update UI or do something if needed
+            });
         }
 
-        txtWelcomMessage.setText("Welcome, " + userName);
+        txtWelcomeMessage.setText("Welcome, " + userName);
+
+        googleDriveHelper = new GoogleDriveHelper(this);
     }
 
     public void goToAssignmentUi(View view) {
@@ -59,20 +69,55 @@ public class TeacherHome extends AppCompatActivity {
     }
 
     public void goToCourseMaterialUi(View view) {
-        Intent intent = new Intent(this, ManageCourseMaterials.class);
-        intent.putExtra("userId", userId);
-        startActivity(intent);
+        if (isDriveServiceReady) {
+            // userId might still be null if fetching is slow, so double-check
+            if (userId != null) {
+                Intent intent = new Intent(this, ManageCourseMaterials.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            } else {
+                // Fetch userId first, then start activity
+                getTeacherIDbyUserName(() -> {
+                    Intent intent = new Intent(this, ManageCourseMaterials.class);
+                    intent.putExtra("userId", userId);
+                    startActivity(intent);
+                });
+            }
+        } else {
+            googleDriveHelper.signIn();
+        }
+    }
+
+    // Called by GoogleDriveHelper when sign-in completes successfully
+    public void onDriveSignInComplete() {
+        isDriveServiceReady = true;
+
+        if (userId != null) {
+            Intent intent = new Intent(this, ManageCourseMaterials.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+        } else {
+            getTeacherIDbyUserName(() -> {
+                Intent intent = new Intent(this, ManageCourseMaterials.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            });
+        }
     }
 
     public void goToAttendenceUi(View view) {
         startActivity(new Intent(this, Attendence.class));
     }
 
-    public void goToReultUi(View view) {
+    public void goToResultUi(View view) {
         startActivity(new Intent(this, Result.class));
     }
 
-    private void getTeacherIDbyUserName() {
+    /**
+     * Helper method to fetch userId from Firestore by username.
+     * Accepts a callback to run after fetching completes.
+     */
+    private void getTeacherIDbyUserName(Runnable onComplete) {
         firestoreDB.collection("users")
                 .whereEqualTo("username", userName)
                 .get()
@@ -82,13 +127,30 @@ public class TeacherHome extends AppCompatActivity {
                                 .get(0).getString("userId");
                         if (fetchedUserId != null) {
                             userId = fetchedUserId;
-
-                            // Save it for future use
                             getSharedPreferences("user_prefs", MODE_PRIVATE).edit()
                                     .putString("userId", userId)
                                     .apply();
                         }
                     }
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // You might want to handle errors here
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
                 });
+    }
+
+    // Forward the Google Sign-in result to the helper
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
+            googleDriveHelper.handleSignInResult(data);
+        }
     }
 }
