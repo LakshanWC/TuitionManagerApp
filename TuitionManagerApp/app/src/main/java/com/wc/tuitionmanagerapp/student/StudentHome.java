@@ -1,6 +1,7 @@
 package com.wc.tuitionmanagerapp.student;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +42,15 @@ public class StudentHome extends AppCompatActivity {
         studentName = getIntent().getStringExtra("username");
         txtWelcome = findViewById(R.id.txtWelcome);
         txtWelcome.setText("Welcome, " + studentName);
+
+        SharedPreferences prefStudent = getSharedPreferences("student_prefs", MODE_PRIVATE);
+
+        if (studentName != null) {
+            prefStudent.edit().putString("username", studentName).apply();
+        } else {
+            studentName = prefStudent.getString("username", "User");
+        }
+
     }
 
     // Add this interface at the bottom of the file (before the last closing brace)
