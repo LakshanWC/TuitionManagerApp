@@ -14,7 +14,6 @@ import com.wc.tuitionmanagerapp.admin.admin_menu;
 import com.wc.tuitionmanagerapp.student.StudentHome;
 import com.wc.tuitionmanagerapp.teacher.TeacherHome;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -38,14 +37,7 @@ public class MainActivity extends AppCompatActivity {
         studentRadio = findViewById(R.id.student_radio);
 
         loginButton.setOnClickListener(v -> attemptLogin());
-
-        // 🔽 TEST MODE: Show Admin Report Fragment directly (bypass login)
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new AdminReportFragment())
-                .commit();
     }
-
 
     private void attemptLogin() {
         String username = usernameEditText.getText().toString().trim();

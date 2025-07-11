@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -19,24 +18,14 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
-<<<<<<< HEAD
-            android:name=".admin.AttendeceReport"
-=======
             android:name=".teacher.DeleteCourseMaterials"
             android:exported="false" />
         <activity
             android:name=".teacher.ManageCourseMaterials"
->>>>>>> main
             android:exported="false" />
         <activity
             android:name=".teacher.TeacherHome"
             android:exported="false" />
-<<<<<<< HEAD
-        <activity
-            android:name=".teacher.TeacherHome"
-            android:exported="false" />
-=======
->>>>>>> main
         <activity
             android:name=".teacher.Attendence"
             android:exported="false" />
@@ -54,6 +43,9 @@
             android:exported="false" />
         <activity
             android:name=".admin.manageReports"
+            android:exported="false" />
+        <activity
+            android:name=".teacher.TeacherHome"
             android:exported="false" />
         <activity
             android:name=".admin.assignStudent"
@@ -109,6 +101,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
