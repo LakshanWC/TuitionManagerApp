@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -31,7 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.wc.tuitionmanagerapp.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 public class DeleteCourseMaterials extends AppCompatActivity {
@@ -79,6 +82,7 @@ public class DeleteCourseMaterials extends AppCompatActivity {
 
         // Start Google sign-in
         googleSignInLauncher.launch(googleDriveHelper.getSignInIntent());
+        findViewById(R.id.btndelete).setOnClickListener(v -> deleteSelectedFiles());
     }
 
     public void onDriveSignInComplete() {
@@ -167,8 +171,47 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         });
     }
 
+    private void deleteSelectedFiles() {
+        List<String> selectedFileIds = materialsAdapter.getSelectedFileIds();
+        if (selectedFileIds.isEmpty()) {
+            Toast.makeText(this, "Please select files to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show progress bar
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
+        // Create a list of delete tasks
+        List<Task<Void>> deleteTasks = new ArrayList<>();
+        for (String fileId : selectedFileIds) {
+            deleteTasks.add(googleDriveHelper.deleteFile(fileId));
+        }
+
+        // Execute all delete operations in parallel
+        Tasks.whenAll(deleteTasks)
+                .addOnSuccessListener(aVoid -> {
+                    // Hide progress bar
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
+
+                    // Refresh the list
+                    Spinner spinner = findViewById(R.id.courseSpinner);
+                    String selectedCourse = (String) spinner.getSelectedItem();
+                    loadMaterialsForCourse(selectedCourse);
+
+                    Toast.makeText(this, "Files deleted successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Hide progress bar
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
+
+                    Log.e("DriveError", "Error deleting files", e);
+                    Toast.makeText(this, "Error deleting files", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private static class MaterialsAdapter extends RecyclerView.Adapter<MaterialsAdapter.ViewHolder> {
         private final List<File> files;
+        private final Set<String> selectedFileIds = new HashSet<>();
 
         public MaterialsAdapter(List<File> files) {
             this.files = files;
@@ -185,11 +228,24 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             File file = files.get(position);
             holder.materialName.setText(file.getName());
+            holder.selectionCheckbox.setChecked(selectedFileIds.contains(file.getId()));
+
+            holder.selectionCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    selectedFileIds.add(file.getId());
+                } else {
+                    selectedFileIds.remove(file.getId());
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
             return files.size();
+        }
+
+        public List<String> getSelectedFileIds() {
+            return new ArrayList<>(selectedFileIds);
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
