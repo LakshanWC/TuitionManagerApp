@@ -1,6 +1,9 @@
 package com.wc.tuitionmanagerapp.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +25,30 @@ public class manageReports extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Display admin username if passed
+        String adminUsername = getIntent().getStringExtra("admin_username");
+        TextView tvLoggedInAs = findViewById(R.id.tvLoggedInAs);
+        if (adminUsername != null && !adminUsername.isEmpty()) {
+            tvLoggedInAs.setText("Logged in as: " + adminUsername);
+        }
+    }
+
+//    public void goToViewAttendance(View view) {
+//        Intent intent = new Intent(this, ViewAttendanceActivity.class);
+//        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+//        startActivity(intent);
+//    }
+//
+//    public void goToGenerateReports(View view) {
+//        Intent intent = new Intent(this, GenerateReportsActivity.class);
+//        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+//        startActivity(intent);
+//    }
+
+    public void goToStudentDistribution(View view) {
+        Intent intent = new Intent(this, courseDistributionReport.class);
+        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+        startActivity(intent);
     }
 }

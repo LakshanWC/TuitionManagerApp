@@ -42,9 +42,9 @@ public class admin_menu extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void goToViewReports(View view) {
-//        Intent intent = new Intent(admin_menu.this, viewReports.class);
-//        intent.putExtra("admin_username", userName);
-//        startActivity(intent);
-//    }
+    public void goToViewReports(View view) {
+        Intent intent = new Intent(admin_menu.this, manageReports.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
+    }
 }

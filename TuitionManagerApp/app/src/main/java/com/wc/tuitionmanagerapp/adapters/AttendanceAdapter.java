@@ -1,22 +1,19 @@
-package com.wc.tuitionmanagerapp.student;
+package com.wc.tuitionmanagerapp.adapters;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wc.tuitionmanagerapp.R;
-
+import com.wc.tuitionmanagerapp.models.Attendance;
 import java.util.List;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
+    private final List<Attendance> attendanceList;
 
-    private List<AttendanceRecord> attendanceList;
-
-    public AttendanceAdapter(List<AttendanceRecord> attendanceList) {
+    public AttendanceAdapter(List<Attendance> attendanceList) {
         this.attendanceList = attendanceList;
     }
 
@@ -30,24 +27,22 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AttendanceRecord record = attendanceList.get(position);
-        holder.tvDate.setText(record.getDate());
-        holder.tvCourse.setText(record.getCourseName());
-        holder.tvStatus.setText(record.getStatus());
-        holder.tvStatus.setTextColor(record.getStatus().equals("Present") ?
-                Color.GREEN : Color.RED);
+        Attendance attendance = attendanceList.get(position);
+        holder.tvDate.setText(String.format("Date: %s", attendance.getDate()));
+        holder.tvStatus.setText(String.format("Status: %s", attendance.getStatus()));
     }
 
     @Override
-    public int getItemCount() { return attendanceList.size(); }
+    public int getItemCount() {
+        return attendanceList.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDate, tvCourse, tvStatus;
+        final TextView tvDate, tvStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tvDate);
-            tvCourse = itemView.findViewById(R.id.tvCourse);
             tvStatus = itemView.findViewById(R.id.tvStatus);
         }
     }
