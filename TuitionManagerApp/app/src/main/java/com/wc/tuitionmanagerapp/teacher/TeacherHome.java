@@ -59,7 +59,7 @@ public class TeacherHome extends AppCompatActivity {
     }
 
     public void goToCourseMaterialUi(View view) {
-        Intent intent = new Intent(this, CourseMaterial.class);
+        Intent intent = new Intent(this, ManageCourseMaterials.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
     }
