@@ -44,21 +44,9 @@ public class GoogleDriveHelper {
     }
 
     public Drive getDriveService() {
-        if (googleAccount == null) {
-            throw new IllegalStateException("Google account not signed in yet.");
-        }
-
-        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
-                context, Collections.singleton(DriveScopes.DRIVE_FILE)
-        );
-        credential.setSelectedAccount(googleAccount.getAccount());
-
-        return new Drive.Builder(
-                new NetHttpTransport(),
-                new GsonFactory(),
-                credential
-        ).setApplicationName("TuitionManagerApp").build();
+        return driveService;
     }
+
 
     public void signIn() {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
