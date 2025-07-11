@@ -34,11 +34,11 @@ public class manageReports extends AppCompatActivity {
         }
     }
 
-    public void goToViewAttendance(View view) {
-        Intent intent = new Intent(this, viewAttendanceReport.class);
-        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
-        startActivity(intent);
-    }
+//    public void goToViewAttendance(View view) {
+//        Intent intent = new Intent(this, ViewAttendanceActivity.class);
+//        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+//        startActivity(intent);
+//    }
 //
 //    public void goToGenerateReports(View view) {
 //        Intent intent = new Intent(this, GenerateReportsActivity.class);
