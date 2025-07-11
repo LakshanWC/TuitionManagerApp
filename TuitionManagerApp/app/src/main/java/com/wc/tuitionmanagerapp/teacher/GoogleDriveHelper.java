@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,13 +32,16 @@ import java.util.concurrent.Executors;
 
 public class GoogleDriveHelper {
     private static final String TAG = "GoogleDriveHelper";
-    private static final int REQUEST_CODE_SIGN_IN = 1002;
     private static final Scope DRIVE_SCOPE = new Scope(DriveScopes.DRIVE_FILE);
 
     private final Context context;
     private final Executor executor = Executors.newSingleThreadExecutor();
     private GoogleSignInAccount googleAccount;
     private Drive driveService;
+
+    public GoogleDriveHelper(Context context) {
+        this.context = context;
+    }
 
     public Drive getDriveService() {
         if (googleAccount == null) {
@@ -55,10 +60,6 @@ public class GoogleDriveHelper {
         ).setApplicationName("TuitionManagerApp").build();
     }
 
-    public GoogleDriveHelper(Context context) {
-        this.context = context;
-    }
-
     public void signIn() {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -66,27 +67,57 @@ public class GoogleDriveHelper {
                 .build();
 
         GoogleSignInClient client = GoogleSignIn.getClient(context, signInOptions);
-        ((CourseMaterial) context).startActivityForResult(client.getSignInIntent(), REQUEST_CODE_SIGN_IN);
+
+        if (context instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) context;
+            activity.startActivityForResult(client.getSignInIntent(), 1002);
+        } else {
+            Log.e(TAG, "Context is not an activity. Cannot start sign-in.");
+        }
     }
 
     public void handleSignInResult(Intent result) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
-                .addOnSuccessListener(googleAccount -> {
-                    Log.d(TAG, "Signed in as " + googleAccount.getEmail());
+                .addOnSuccessListener(account -> {
+                    Log.d(TAG, "Signed in as " + account.getEmail());
 
-                    // Use the authenticated account to sign in to the Drive service
-                    GoogleAccountCredential credential = GoogleAccountCredential
-                            .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
-                    credential.setSelectedAccount(googleAccount.getAccount());
+                    // ✅ Correctly initialize Google account and Drive service
+                    setGoogleAccount(account);
 
-                    driveService = new Drive.Builder(
-                            new NetHttpTransport(),
-                            new GsonFactory(),
-                            credential)
-                            .setApplicationName("Tuition Manager App")
-                            .build();
+                    // 🔄 Notify the relevant screen (activity) of sign-in completion
+                    if (context instanceof TeacherHome) {
+                        ((TeacherHome) context).onDriveSignInComplete();
+                    } else if (context instanceof DeleteCourseMaterials) {
+                        ((DeleteCourseMaterials) context).onDriveSignInComplete();
+                    }
+
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Unable to sign in.", e));
+    }
+
+    public void setGoogleAccount(GoogleSignInAccount account) {
+        this.googleAccount = account;
+
+        GoogleAccountCredential credential = GoogleAccountCredential
+                .usingOAuth2(context, Collections.singleton(DriveScopes.DRIVE_FILE));
+        credential.setSelectedAccount(account.getAccount());
+
+        driveService = new Drive.Builder(
+                new NetHttpTransport(),
+                new GsonFactory(),
+                credential)
+                .setApplicationName("Tuition Manager App")
+                .build();
+    }
+
+    public Intent getSignInIntent() {
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestScopes(DRIVE_SCOPE)
+                .build();
+
+        GoogleSignInClient client = GoogleSignIn.getClient(context, signInOptions);
+        return client.getSignInIntent();
     }
 
     public Task<String> uploadFileToDrive(Uri fileUri, String fileName, String mimeType, String parentFolderId) {
@@ -96,19 +127,13 @@ public class GoogleDriveHelper {
                 throw new IOException("Cannot open file input stream");
             }
 
-            // Create file metadata
             File fileMetadata = new File();
             fileMetadata.setName(fileName);
             fileMetadata.setMimeType(mimeType);
             fileMetadata.setParents(Collections.singletonList(parentFolderId));
 
-            // Upload file
             InputStreamContent mediaContent = new InputStreamContent(mimeType, inputStream);
-            Drive.Files.Create createFile = driveService.files()
-                    .create(fileMetadata, mediaContent);
-
-            // For large files, consider using resumable upload:
-            // createFile.getMediaHttpUploader().setDirectUploadEnabled(false);
+            Drive.Files.Create createFile = driveService.files().create(fileMetadata, mediaContent);
 
             File uploadedFile = createFile.execute();
             return uploadedFile.getId();
@@ -117,7 +142,6 @@ public class GoogleDriveHelper {
 
     public Task<String> getOrCreateFolder(String folderName) {
         return Tasks.call(executor, () -> {
-            // Check if folder exists
             String query = "mimeType='application/vnd.google-apps.folder' and name='" + folderName + "' and trashed=false";
             Drive.Files.List listRequest = driveService.files().list()
                     .setQ(query)
@@ -129,7 +153,6 @@ public class GoogleDriveHelper {
                 return fileList.getFiles().get(0).getId();
             }
 
-            // Create new folder if it doesn't exist
             File folderMetadata = new File();
             folderMetadata.setName(folderName);
             folderMetadata.setMimeType("application/vnd.google-apps.folder");
@@ -145,22 +168,26 @@ public class GoogleDriveHelper {
     public Task<String> getFolderShareableLink(String folderId) {
         return Tasks.call(executor, () -> {
             try {
-                // Set permission to make the folder accessible to anyone with the link
                 Permission userPermission = new Permission()
                         .setType("anyone")
                         .setRole("reader");
 
-                // Apply the permission to the folder
                 driveService.permissions().create(folderId, userPermission)
                         .setFields("id")
                         .execute();
 
-                // Return the shareable link
                 return "https://drive.google.com/drive/folders/" + folderId;
             } catch (Exception e) {
                 Log.e(TAG, "Error creating shareable link", e);
-                throw e; // Re-throw to trigger onFailure in the calling code
+                throw e;
             }
+        });
+    }
+
+    public Task<Void> deleteFile(String fileId) {
+        return Tasks.call(executor, () -> {
+            driveService.files().delete(fileId).execute();
+            return null;
         });
     }
 
