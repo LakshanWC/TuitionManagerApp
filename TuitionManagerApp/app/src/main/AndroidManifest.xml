@@ -19,24 +19,20 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
-<<<<<<< HEAD
-            android:name=".admin.AttendeceReport"
-=======
-            android:name=".teacher.DeleteCourseMaterials"
+            android:name=".admin.viewAttendanceReport"
             android:exported="false" />
         <activity
-            android:name=".teacher.ManageCourseMaterials"
->>>>>>> main
+            android:name=".admin.AttendanceReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AttendanceReport"
+            android:exported="false" />
+        <activity
+            android:name=".teacher.TeacherHome"
             android:exported="false" />
         <activity
             android:name=".teacher.TeacherHome"
             android:exported="false" />
-<<<<<<< HEAD
-        <activity
-            android:name=".teacher.TeacherHome"
-            android:exported="false" />
-=======
->>>>>>> main
         <activity
             android:name=".teacher.Attendence"
             android:exported="false" />
