@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -59,6 +61,10 @@ public class Assignment extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        LinearLayout addMCard = findViewById(R.id.addMaterialCard);
+        Animation wiggleAnimation = AnimationUtils.loadAnimation(this,R.anim.wiggle);
+        addMCard.startAnimation(wiggleAnimation);
 
 
         firestoreDB = FirebaseFirestore.getInstance();
