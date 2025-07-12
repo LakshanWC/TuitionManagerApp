@@ -55,4 +55,8 @@ public class manageCourses extends AppCompatActivity {
         Intent intent = new Intent(manageCourses.this, assignStudent.class);
         startActivity(intent);
     }
+
+    public void cmGoToHome(View view){
+        finish();
+    }
 }

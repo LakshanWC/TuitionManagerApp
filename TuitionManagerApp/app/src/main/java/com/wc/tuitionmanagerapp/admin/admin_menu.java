@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.wc.tuitionmanagerapp.MainActivity;
 import com.wc.tuitionmanagerapp.R;
 
 public class admin_menu extends AppCompatActivity {
@@ -46,5 +47,15 @@ public class admin_menu extends AppCompatActivity {
         Intent intent = new Intent(admin_menu.this, manageReports.class);
         intent.putExtra("admin_username", userName);
         startActivity(intent);
+    }
+
+    public void exitAppForAdmin(View view){
+        finishAffinity();
+        System.exit(0);
+    }
+
+    public void logoutAdmin(View view){
+        Intent goToLoginForAdmin = new Intent(this, MainActivity.class);
+        startActivity(goToLoginForAdmin);
     }
 }

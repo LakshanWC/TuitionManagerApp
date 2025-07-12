@@ -51,4 +51,8 @@ public class manageReports extends AppCompatActivity {
         intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
         startActivity(intent);
     }
+
+    public void repotsGoHome(View view){
+        finish();
+    }
 }

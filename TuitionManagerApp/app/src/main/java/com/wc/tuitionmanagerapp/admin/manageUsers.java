@@ -88,4 +88,8 @@ public class manageUsers extends AppCompatActivity {
         intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
         startActivity(intent);
     }
+
+    public void userManagementGoHome(View view){
+        finish();
+    }
 }
