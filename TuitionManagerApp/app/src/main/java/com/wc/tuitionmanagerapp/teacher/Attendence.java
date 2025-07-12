@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -151,7 +152,7 @@ public class Attendence extends AppCompatActivity {
                         DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
                         String courseId = doc.getString("courseId");
 
-                        setAttendace(courseId);
+                        setAttendace(courseId,view);
 
                         if (courseId != null) {
                             Log.d("COURSE_ID", "Found courseId: " + courseId);
@@ -168,7 +169,10 @@ public class Attendence extends AppCompatActivity {
                 });
     }
 
-    public void setAttendace(String currentCourseId){
+    public void setAttendace(String currentCourseId,View view){
+
+        Button clickedButton = (Button) view;
+        int id = clickedButton.getId();
 
         TextView tvStudentName = findViewById(R.id.tvStudentName);
         TextView tvStudentId = findViewById(R.id.tvStudentId);
@@ -179,10 +183,18 @@ public class Attendence extends AppCompatActivity {
         String currentDT = tvDateTime.getText().toString();
 
         Map<String,Object> attendanceData =new HashMap<>();
-        attendanceData.put("studentId", currentSTId);
-        attendanceData.put("studentName", currentSTName);
-        attendanceData.put("subject", currentCourseId);
-        attendanceData.put("dateTime", currentDT);
+        attendanceData.put("userId", currentSTId);
+        attendanceData.put("username", currentSTName);
+        attendanceData.put("courseId", currentCourseId);
+        attendanceData.put("date", currentDT);
+
+
+        // Add status for each button
+        if (id == R.id.btnMarkAttendance) {
+            attendanceData.put("status", "Present");
+        } else if (id == R.id.btnAbsent) {
+            attendanceData.put("status", "Absent");
+        }
 
         firestoreDB.collection("attendance")
                 .add(attendanceData)
