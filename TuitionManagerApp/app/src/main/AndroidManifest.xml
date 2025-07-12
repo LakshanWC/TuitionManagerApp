@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".admin.viewResultsReport"
+            android:exported="false" />
         <!-- Admin Activities -->
         <activity
             android:name=".admin.viewAttendanceReport"
@@ -56,9 +58,7 @@
             android:exported="false" />
         <activity
             android:name=".admin.admin_menu"
-            android:exported="false" />
-
-        <!-- Teacher Activities -->
+            android:exported="false" /> <!-- Teacher Activities -->
         <activity
             android:name=".teacher.TeacherHome"
             android:exported="false" />
@@ -79,9 +79,7 @@
             android:exported="false" />
         <activity
             android:name=".teacher.DeleteCourseMaterials"
-            android:exported="false" />
-
-        <!-- Student Activities -->
+            android:exported="false" /> <!-- Student Activities -->
         <activity
             android:name=".student.StudentHome"
             android:exported="false" />
@@ -96,18 +94,16 @@
             android:exported="false" />
         <activity
             android:name=".student.ViewResults"
-            android:exported="false" />
-
-        <!-- Main Launcher Activity -->
+            android:exported="false" /> <!-- Main Launcher Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

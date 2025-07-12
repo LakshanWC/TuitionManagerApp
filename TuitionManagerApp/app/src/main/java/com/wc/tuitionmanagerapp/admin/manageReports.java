@@ -39,12 +39,12 @@ public class manageReports extends AppCompatActivity {
         intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
         startActivity(intent);
     }
-//
-//    public void goToGenerateReports(View view) {
-//        Intent intent = new Intent(this, GenerateReportsActivity.class);
-//        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
-//        startActivity(intent);
-//    }
+
+    public void goToGenerateReports(View view) {
+        Intent intent = new Intent(this, viewResultsReport.class);
+        intent.putExtra("admin_username", getIntent().getStringExtra("admin_username"));
+        startActivity(intent);
+    }
 
     public void goToStudentDistribution(View view) {
         Intent intent = new Intent(this, courseDistributionReport.class);
