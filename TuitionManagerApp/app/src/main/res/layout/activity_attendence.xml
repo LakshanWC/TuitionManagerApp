@@ -134,10 +134,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/btnMarkAttendance"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Mark As Present"
             android:layout_marginLeft="20dp"
@@ -147,6 +149,17 @@
             android:textColor="@android:color/white"
             android:padding="12dp"
             android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnAbsent"
+
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/negative_red"
+            android:text="Mark As Absent"
+            android:onClick="markAttendance"
+            />
+    </LinearLayout>
 
         <!-- Clear + Cancel in a row -->
         <LinearLayout
