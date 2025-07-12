@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="12dp"
     android:background="@color/white"
     tools:context=".student.StudentHome">
 
@@ -16,10 +16,10 @@
         android:layout_height="wrap_content"
         android:text="Welcome, Student"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="16dp" />
 
     <LinearLayout
         android:id="@+id/showQRCode"
@@ -27,13 +27,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="32dp"
         android:onClick="showQRCode">
 
         <ImageView
             android:id="@+id/currentQR"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/qr_code_48px" />
     </LinearLayout>
 
@@ -43,31 +43,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="12dp">
 
         <!-- Attendance Card -->
         <LinearLayout
             android:id="@+id/cardAttendance"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToAttendance">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@android:drawable/ic_menu_today" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Attendance"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -75,25 +75,25 @@
         <!-- Assignments Card -->
         <LinearLayout
             android:id="@+id/cardAssignments"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToAssignments">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@android:drawable/ic_menu_edit" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Assignments"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -105,31 +105,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="12dp">
 
         <!-- Results Card -->
         <LinearLayout
             android:id="@+id/cardResults"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToResults">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@android:drawable/ic_menu_agenda" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Results"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -137,25 +137,25 @@
         <!-- Course Materials Card -->
         <LinearLayout
             android:id="@+id/cardCourseMaterials"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToCourseMaterials">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@android:drawable/ic_menu_view" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Course Materials"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -167,32 +167,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="12dp">
 
-        <!-- Notifications Card -->
         <!-- Notifications Card -->
         <LinearLayout
             android:id="@+id/cardNotifications"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToNotifications">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@drawable/ic_notifications" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Notifications"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -200,25 +199,25 @@
         <!-- Log Out Card -->
         <LinearLayout
             android:id="@+id/card_logout"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="logoutStudent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@drawable/outline_account_circle_off_24" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Log Out"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
@@ -233,25 +232,25 @@
 
         <LinearLayout
             android:id="@+id/card_exit"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="exitAppFromStudent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:src="@drawable/outline_cancel_24" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Exit"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black" />
         </LinearLayout>
