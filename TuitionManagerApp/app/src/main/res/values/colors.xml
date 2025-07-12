@@ -9,4 +9,5 @@
     <color name="grey">#757575</color>
     <color name="primary">#3F51B5</color>
     <color name="primaryDark">#303F9F</color>
+    <color name="colorPrimary">#6200EE</color>  <!-- Or your preferred primary color -->
 </resources>
