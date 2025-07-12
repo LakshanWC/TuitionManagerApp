@@ -17,9 +17,11 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
-            android:name=".admin.viewResultsReport"
+            android:name=".student.studentViewAttendance"
             android:exported="false" />
-        <!-- Admin Activities -->
+        <activity
+            android:name=".admin.viewResultsReport"
+            android:exported="false" /> <!-- Admin Activities -->
         <activity
             android:name=".admin.viewAttendanceReport"
             android:exported="false" />

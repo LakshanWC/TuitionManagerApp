@@ -104,10 +104,13 @@ public class StudentHome extends AppCompatActivity {
 
     // Update your existing goToAttendance method
     public void goToAttendance(View view) {
+        Intent intent = new Intent(StudentHome.this, studentViewAttendance.class);
+        intent.putExtra("username", studentName); // studentName is from your existing code
+        startActivity(intent);
         getStudentIdByUsername(studentName, new StudentIdCallback() {
             @Override
             public void onSuccess(String studentId) {
-                Intent intent = new Intent(StudentHome.this, ViewAttendance.class);
+                Intent intent = new Intent(StudentHome.this, studentViewAttendance.class);
                 intent.putExtra("studentId", studentId);
                 startActivity(intent);
             }
