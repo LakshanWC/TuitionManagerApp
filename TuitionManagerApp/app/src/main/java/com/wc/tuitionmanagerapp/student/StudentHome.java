@@ -135,6 +135,22 @@ public class StudentHome extends AppCompatActivity {
         intent.putExtra("username", studentName); // studentName is from your existing code
         startActivity(intent);
     }
+    public void goToNotifications(View view) {
+        getStudentIdByUsername(studentName, new StudentIdCallback() {
+            @Override
+            public void onSuccess(String studentId) {
+                Intent intent = new Intent(StudentHome.this, checkNotification.class);
+                intent.putExtra("studentId", studentId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(StudentHome.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("StudentHome", "Failed to get student ID", e);
+            }
+        });
+    }
 
     public void goToCourseMaterials(View view) {
         if (studentName == null || studentName.isEmpty()) {
@@ -144,13 +160,13 @@ public class StudentHome extends AppCompatActivity {
 
         try {
 //            System.out.println("Student name: " + studentName);
-            System.out.println("1------------------------------------------------------");
+//            System.out.println("1------------------------------------------------------");
             Intent intent = new Intent(this, viewMatirals.class);
-            System.out.println("2------------------------------------------------------");
+//            System.out.println("2------------------------------------------------------");
             intent.putExtra("username", studentName);
-            System.out.println("3------------------------------------------------------");
+//            System.out.println("3------------------------------------------------------");
             startActivity(intent);
-            System.out.println("4------------------------------------------------------");
+//            System.out.println("4------------------------------------------------------");
         } catch (Exception e) {
             Toast.makeText(this, "Error opening materials", Toast.LENGTH_SHORT).show();
             Log.e("StudentHome", "Course materials error", e);
