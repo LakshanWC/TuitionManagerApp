@@ -16,7 +16,7 @@
         android:paddingEnd="24dp"
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
-        tools:context=".teacher.CourseMaterial">
+        tools:context=".teacher.Assignment">
 
         <TextView
             android:layout_width="wrap_content"
@@ -148,7 +148,7 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="16dp"
             android:elevation="4dp"
-            android:onClick="uploadMaterials" />
+            android:onClick="uploadAssignment" />
 
         <!-- Horizontal Buttons Row -->
         <LinearLayout
@@ -159,22 +159,13 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="16dp">
 
-            <Button
-                android:id="@+id/btnClearAll"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/negative_red"
-                android:textColor="@android:color/white"
-                android:text="Clear All"
-                android:layout_marginEnd="12dp" />
 
             <Button
                 android:id="@+id/btnHome"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:onClick="goHome"
+                android:onClick="goToMyTeacherHome"
                 android:backgroundTint="@color/primary_color"
                 android:textColor="@android:color/white"
                 android:text="Home" />

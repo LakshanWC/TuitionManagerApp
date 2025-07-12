@@ -25,7 +25,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-//import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -111,8 +111,7 @@ public class CourseMaterial extends AppCompatActivity {
     }
 
     public void goHome(View view){
-        Intent goHomeIntent = new Intent(this, TeacherHome.class);
-        startActivity(goHomeIntent);
+            NavigateUtil.goToTeacherHome(this);
     }
 
     public void selectDocument(View view){

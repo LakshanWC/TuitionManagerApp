@@ -39,4 +39,8 @@ public class Attendence extends AppCompatActivity {
         IntentIntegrator myIntentIntegrator = new IntentIntegrator(Attendence.this);
         myIntentIntegrator.initiateScan();
     }
+
+    public void goesHome(View view) {
+        NavigateUtil.goToTeacherHome(this);
+    }
 }

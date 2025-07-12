@@ -2,6 +2,7 @@ package com.wc.tuitionmanagerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -13,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.wc.tuitionmanagerapp.admin.admin_menu;
 import com.wc.tuitionmanagerapp.student.StudentHome;
 import com.wc.tuitionmanagerapp.teacher.TeacherHome;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,14 +38,7 @@ public class MainActivity extends AppCompatActivity {
         studentRadio = findViewById(R.id.student_radio);
 
         loginButton.setOnClickListener(v -> attemptLogin());
-
-        // 🔽 TEST MODE: Show Admin Report Fragment directly (bypass login)
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new AdminReportFragment())
-                .commit();
     }
-
 
     private void attemptLogin() {
         String username = usernameEditText.getText().toString().trim();
@@ -108,5 +101,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(teacherHomeIntent);
             finish();
         }
+    }
+
+    public void exitHoleApp(View view){
+        finishAffinity(); //close all the activities
+        System.exit(0); //cloas the app
     }
 }

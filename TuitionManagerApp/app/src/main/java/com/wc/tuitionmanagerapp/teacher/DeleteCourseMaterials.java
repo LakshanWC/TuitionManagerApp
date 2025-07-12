@@ -1,5 +1,6 @@
 package com.wc.tuitionmanagerapp.teacher;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,7 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.wc.tuitionmanagerapp.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 public class DeleteCourseMaterials extends AppCompatActivity {
@@ -41,12 +46,15 @@ public class DeleteCourseMaterials extends AppCompatActivity {
     private RecyclerView materialsRecyclerView;
     private MaterialsAdapter materialsAdapter;
     private List<File> driveFiles = new ArrayList<>();
+    private String pendingCourseNameToLoad = null;
+    private ActivityResultLauncher<Intent> googleSignInLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_delete_course_materials);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -59,16 +67,36 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         // Initialize Google Drive Helper
         googleDriveHelper = new GoogleDriveHelper(this);
 
-        // Initialize UI components
+        // Register result handler
+        googleSignInLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    googleDriveHelper.handleSignInResult(result.getData());
+                });
+
+        // RecyclerView setup
         materialsRecyclerView = findViewById(R.id.materialsRecyclerView);
         materialsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         materialsAdapter = new MaterialsAdapter(driveFiles);
         materialsRecyclerView.setAdapter(materialsAdapter);
 
-        // Get teacher UID and load courses
+        // Start Google sign-in
+        googleSignInLauncher.launch(googleDriveHelper.getSignInIntent());
+        findViewById(R.id.btndelete).setOnClickListener(v -> deleteSelectedFiles());
+    }
+
+    public void onDriveSignInComplete() {
         teacherUID = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 .getString("userId", null);
-        getCourseNames();
+        if (teacherUID == null) {
+            Toast.makeText(this, "Teacher ID not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        getCourseNames(); // Load courses only after sign-in is successful
+    }
+
+    public void goToMyTHome(View view) {
+        NavigateUtil.goToTeacherHome(this);
     }
 
     private void getCourseNames() {
@@ -76,33 +104,29 @@ public class DeleteCourseMaterials extends AppCompatActivity {
                 .whereArrayContains("teachers", teacherUID)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            String courseName = doc.getString("courseName");
-                            if (courseName != null) {
-                                courseNames.add(courseName);
-                            }
+                    courseNames.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        String courseName = doc.getString("courseName");
+                        if (courseName != null) {
+                            courseNames.add(courseName);
                         }
-                        addCoursesToSpinner(courseNames);
-                        Log.d("CourseList", "Courses for teacher: " + courseNames);
-                    } else {
-                        Log.d("CourseList", "No courses found for this teacher.");
                     }
+                    addCoursesToSpinner(courseNames);
                 })
-                .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching courses: ", e));
+                .addOnFailureListener(e -> {
+                    Log.e("FirestoreError", "Error fetching courses", e);
+                    Toast.makeText(this, "Error fetching courses", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void addCoursesToSpinner(List<String> courses) {
         Spinner spinner = findViewById(R.id.courseSpinner);
-        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                courses
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, courses
         );
-        myArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(myArrayAdapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
-        // Add spinner item selected listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -112,41 +136,32 @@ public class DeleteCourseMaterials extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
             }
         });
     }
 
     private void loadMaterialsForCourse(String courseName) {
-        // First sign in to Google Drive if not already signed in
-        if (googleDriveHelper.getDriveService() == null) {
-            googleDriveHelper.signIn();
-            return;
+        try {
+            googleDriveHelper.getOrCreateFolder(courseName)
+                    .addOnSuccessListener(folderId -> listFilesInFolder(folderId))
+                    .addOnFailureListener(e -> {
+                        Log.e("DriveError", "Failed to access folder", e);
+                        Toast.makeText(this, "Could not access course folder", Toast.LENGTH_SHORT).show();
+                    });
+        } catch (IllegalStateException e) {
+            Toast.makeText(this, "Sign in first", Toast.LENGTH_SHORT).show();
         }
-
-        // Get or create folder for this course
-        googleDriveHelper.getOrCreateFolder(courseName)
-                .addOnSuccessListener(folderId -> {
-                    // Now list all files in this folder
-                    listFilesInFolder(folderId);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("DriveError", "Error accessing course folder", e);
-                    Toast.makeText(this, "Failed to access course materials", Toast.LENGTH_SHORT).show();
-                });
     }
 
     private void listFilesInFolder(String folderId) {
-        Task<FileList> listTask = Tasks.call(Executors.newSingleThreadExecutor(), () -> {
+        Tasks.call(Executors.newSingleThreadExecutor(), () -> {
             String query = "'" + folderId + "' in parents and trashed = false";
             return googleDriveHelper.getDriveService().files().list()
                     .setQ(query)
                     .setSpaces("drive")
                     .setFields("files(id, name, mimeType, size, modifiedTime)")
                     .execute();
-        });
-
-        listTask.addOnSuccessListener(fileList -> {
+        }).addOnSuccessListener(fileList -> {
             driveFiles.clear();
             driveFiles.addAll(fileList.getFiles());
             materialsAdapter.notifyDataSetChanged();
@@ -160,9 +175,47 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         });
     }
 
-    // You'll need to create this MaterialsAdapter class
+    private void deleteSelectedFiles() {
+        List<String> selectedFileIds = materialsAdapter.getSelectedFileIds();
+        if (selectedFileIds.isEmpty()) {
+            Toast.makeText(this, "Please select files to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show progress bar
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
+        // Create a list of delete tasks
+        List<Task<Void>> deleteTasks = new ArrayList<>();
+        for (String fileId : selectedFileIds) {
+            deleteTasks.add(googleDriveHelper.deleteFile(fileId));
+        }
+
+        // Execute all delete operations in parallel
+        Tasks.whenAll(deleteTasks)
+                .addOnSuccessListener(aVoid -> {
+                    // Hide progress bar
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
+
+                    // Refresh the list
+                    Spinner spinner = findViewById(R.id.courseSpinner);
+                    String selectedCourse = (String) spinner.getSelectedItem();
+                    loadMaterialsForCourse(selectedCourse);
+
+                    Toast.makeText(this, "Files deleted successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Hide progress bar
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
+
+                    Log.e("DriveError", "Error deleting files", e);
+                    Toast.makeText(this, "Error deleting files", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private static class MaterialsAdapter extends RecyclerView.Adapter<MaterialsAdapter.ViewHolder> {
         private final List<File> files;
+        private final Set<String> selectedFileIds = new HashSet<>();
 
         public MaterialsAdapter(List<File> files) {
             this.files = files;
@@ -179,12 +232,24 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             File file = files.get(position);
             holder.materialName.setText(file.getName());
-            // You can add more details like file size or modification date here
+            holder.selectionCheckbox.setChecked(selectedFileIds.contains(file.getId()));
+
+            holder.selectionCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    selectedFileIds.add(file.getId());
+                } else {
+                    selectedFileIds.remove(file.getId());
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
             return files.size();
+        }
+
+        public List<String> getSelectedFileIds() {
+            return new ArrayList<>(selectedFileIds);
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
