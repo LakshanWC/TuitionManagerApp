@@ -71,6 +71,7 @@ dependencies {
 
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")  //for qr code scaner
+    implementation("com.google.zxing:core:3.4.1")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-messaging:23.3.1") // For notifications

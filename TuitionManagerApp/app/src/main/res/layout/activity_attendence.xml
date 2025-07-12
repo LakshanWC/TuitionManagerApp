@@ -84,25 +84,27 @@
                 android:text="default text" />
         </LinearLayout>
 
-        <!-- Subject -->
+        <!-- Subject Spinner -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subject: "
+                android:text="Course : "
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:layout_marginEnd="8dp" />
 
-            <TextView
-                android:id="@+id/tvSubject"
+            <Spinner
+                android:id="@+id/courseSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="default subject" />
+                android:spinnerMode="dropdown" />
         </LinearLayout>
 
         <!-- Date & Time -->
@@ -114,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time: "
+                android:text="Date: "
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
 
@@ -137,8 +139,9 @@
             android:id="@+id/btnMarkAttendance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mark Attendance"
+            android:text="Mark As Present"
             android:layout_marginLeft="20dp"
+            android:onClick="markAttendance"
             android:layout_marginRight="20dp"
             android:backgroundTint="@color/positive_green"
             android:textColor="@android:color/white"
@@ -152,7 +155,6 @@
             android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:weightSum="2">
-
 
             <Button
                 android:id="@+id/btnHome"

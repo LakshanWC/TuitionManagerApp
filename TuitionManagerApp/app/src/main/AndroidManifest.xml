@@ -19,35 +19,7 @@
 
         <!-- Admin Activities -->
         <activity
-<<<<<<< HEAD
-            android:name=".admin.AttendeceReport"
-=======
             android:name=".admin.viewAttendanceReport"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.DeleteCourseMaterials"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.ManageCourseMaterials"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.TeacherHome"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.TeacherHome"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.Attendence"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.Assignment"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.CourseMaterial"
-            android:exported="false" />
-        <activity
-            android:name=".teacher.Result"
->>>>>>> 892be26a4a3bb8040df31cf1b88614a404cb33dc
             android:exported="false" />
         <activity
             android:name=".admin.courseDistributionReport"
