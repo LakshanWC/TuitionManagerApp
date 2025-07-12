@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.wc.tuitionmanagerapp.MainActivity;
 import com.wc.tuitionmanagerapp.R;
 
 public class TeacherHome extends AppCompatActivity {
@@ -152,5 +153,16 @@ public class TeacherHome extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             googleDriveHelper.handleSignInResult(data);
         }
+    }
+
+    public void logoutTeacher(View view){
+        finishAffinity();
+        Intent gotoLogInIntent = new Intent(this, MainActivity.class);
+        startActivity(gotoLogInIntent);
+    }
+
+    public void exitApp(View view){
+        finishAffinity();
+        System.exit(0);
     }
 }

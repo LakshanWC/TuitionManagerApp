@@ -95,6 +95,10 @@ public class DeleteCourseMaterials extends AppCompatActivity {
         getCourseNames(); // Load courses only after sign-in is successful
     }
 
+    public void goToMyTHome(View view) {
+        NavigateUtil.goToTeacherHome(this);
+    }
+
     private void getCourseNames() {
         firestoreDB.collection("courses")
                 .whereArrayContains("teachers", teacherUID)
