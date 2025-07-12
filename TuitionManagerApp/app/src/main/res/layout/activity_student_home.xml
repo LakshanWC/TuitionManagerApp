@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="16dp">
 
         <!-- Results Card -->
         <LinearLayout
@@ -161,20 +161,47 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Row 3: Sign Out & Exit -->
+    <!-- Row 3: Notifications & Log Out -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="1dp">
+        android:layout_marginBottom="16dp">
+
+        <!-- Notifications Card -->
+        <!-- Notifications Card -->
+        <LinearLayout
+            android:id="@+id/cardNotifications"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToNotifications">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_notifications" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Notifications"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
 
         <!-- Log Out Card -->
         <LinearLayout
             android:id="@+id/card_logout"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
@@ -193,15 +220,21 @@
                 android:text="Log Out"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:gravity="center" />
+                android:textColor="@android:color/black" />
         </LinearLayout>
+    </LinearLayout>
 
-        <!-- Exit Card -->
+    <!-- Exit Card (centered below) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
         <LinearLayout
             android:id="@+id/card_exit"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
@@ -220,8 +253,7 @@
                 android:text="Exit"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:gravity="center" />
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
