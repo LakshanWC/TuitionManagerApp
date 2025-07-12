@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/resultsChart"
+        android:id="@+id/attendanceChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
