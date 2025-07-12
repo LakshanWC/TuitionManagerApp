@@ -137,7 +137,24 @@ public class StudentHome extends AppCompatActivity {
     }
 
     public void goToCourseMaterials(View view) {
-        startActivity(new Intent(this, ViewCourseMaterials.class));
+        if (studentName == null || studentName.isEmpty()) {
+            Toast.makeText(this, "User not identified", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+//            System.out.println("Student name: " + studentName);
+            System.out.println("1------------------------------------------------------");
+            Intent intent = new Intent(this, viewMatirals.class);
+            System.out.println("2------------------------------------------------------");
+            intent.putExtra("username", studentName);
+            System.out.println("3------------------------------------------------------");
+            startActivity(intent);
+            System.out.println("4------------------------------------------------------");
+        } catch (Exception e) {
+            Toast.makeText(this, "Error opening materials", Toast.LENGTH_SHORT).show();
+            Log.e("StudentHome", "Course materials error", e);
+        }
     }
 
     public void logoutStudent(View view){

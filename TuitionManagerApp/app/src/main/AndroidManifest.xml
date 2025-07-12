@@ -17,6 +17,9 @@
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
         <activity
+            android:name=".student.viewMatirals"
+            android:exported="false" />
+        <activity
             android:name=".student.SubmitAssignment"
             android:exported="false" />
         <activity
@@ -94,6 +97,7 @@
         <activity
             android:name=".student.ViewAssignments"
             android:exported="false" />
+
         <activity
             android:name=".student.ViewCourseMaterials"
             android:exported="false" />
@@ -108,7 +112,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CLIPBOARD_WRITE" />
+    <uses-permission android:name="android.permission.CLIPBOARD_READ" />
 
 </manifest>
