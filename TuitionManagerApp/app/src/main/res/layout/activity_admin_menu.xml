@@ -8,30 +8,29 @@
     tools:context=".admin.admin_menu"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="6dp"
+    android:padding="4dp"
     android:background="@color/white">
 
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="Welcome, Admin"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="25dp"
-        android:paddingBottom="30dp"/>
+        android:textSize="20sp"
+        android:paddingBottom="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginBottom="8dp">
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/outline_account_circle_24" />
     </LinearLayout>
 
@@ -40,31 +39,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center">
 
         <LinearLayout
             android:id="@+id/card_manage_users"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToManageUsers">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/outline_people_24"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Manage Users"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
@@ -72,23 +70,23 @@
 
         <LinearLayout
             android:id="@+id/card_manage_courses"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToManageCourses">
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/outline_library_books_24" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Manage Courses"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:gravity="center" />
@@ -100,28 +98,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         android:gravity="center">
 
         <LinearLayout
             android:id="@+id/card_assign_students"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/card"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToAssignStudents">
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/outline_connect_without_contact_24" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Assign Students"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:gravity="center" />
@@ -129,89 +128,118 @@
 
         <LinearLayout
             android:id="@+id/card_view_reports"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="goToViewReports">
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/outline_bar_chart_24" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="View Reports"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
-    <!-- Row 3: Log Out and Exit -->
+
+    <!-- Row 3: New Notifications Option -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal">
+        android:layout_marginBottom="8dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/card_send_notifications"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/card"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:onClick="goToSendNotifications">
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/outline_notifications_24" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Send Notifications"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/card_logout"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginEnd="16dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="logoutAdmin">
-
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/outline_account_circle_off_24" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Log Out"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- Exit Button -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/card_exit"
             android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:background="@drawable/card"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:onClick="exitAppForAdmin">
-
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/outline_cancel_24" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="Exit"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:gravity="center" />
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TuitionManagerApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".admin.sendNotification"
+            android:exported="false" />
         <activity
             android:name=".student.checkNotification"
             android:exported="false" />
@@ -121,7 +123,4 @@
         </activity>
     </application>
 
-
-
 </manifest>
-

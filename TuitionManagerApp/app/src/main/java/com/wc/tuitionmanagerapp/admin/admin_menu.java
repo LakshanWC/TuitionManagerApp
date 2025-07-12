@@ -49,6 +49,12 @@ public class admin_menu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToSendNotifications(View view) {
+        Intent intent = new Intent(admin_menu.this, sendNotification.class);
+        intent.putExtra("admin_username", userName);
+        startActivity(intent);
+    }
+
     public void exitAppForAdmin(View view){
         finishAffinity();
         System.exit(0);
