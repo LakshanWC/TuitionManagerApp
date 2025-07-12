@@ -6,7 +6,6 @@
     android:id="@+id/main"
     android:background="@color/white">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,14 +14,21 @@
         <!-- Title -->
         <TextView
             android:id="@+id/titleText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Release Results"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
-            android:paddingBottom="200dp"
-            android:layout_marginTop="50dp" />
+            android:textAlignment="center"
+            android:paddingBottom="32dp"
+            android:layout_marginTop="32dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginBottom="24dp" />
 
         <!-- Select Course -->
         <TextView
@@ -30,12 +36,15 @@
             android:layout_height="wrap_content"
             android:text="Select Course"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
 
         <Spinner
             android:id="@+id/spinnerCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="8dp"
             android:layout_marginBottom="16dp" />
 
         <!-- Select Student -->
@@ -44,12 +53,15 @@
             android:layout_height="wrap_content"
             android:text="Select Student"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
 
         <Spinner
             android:id="@+id/spinnerStudent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="8dp"
             android:layout_marginBottom="16dp" />
 
         <!-- Marks -->
@@ -58,15 +70,16 @@
             android:layout_height="wrap_content"
             android:text="Marks"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
 
         <Spinner
             android:id="@+id/spinnerMarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Remarks -->
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="8dp"
+            android:layout_marginBottom="32dp" />
 
         <!-- Upload Result Button -->
         <Button
@@ -74,9 +87,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload Result"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:backgroundTint="@color/positive_green"
+            android:textColor="@android:color/white"
             android:onClick="onSubmitClick"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="16dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:onClick="goToTHome"/>
 
     </LinearLayout>
 </ScrollView>

@@ -103,4 +103,8 @@ public class ManageCourseMaterials extends AppCompatActivity {
     public GoogleDriveHelper getGoogleDriveHelper() {
         return googleDriveHelper;
     }
+
+    public void goBackToTHome(View view){
+        finish();
+    }
 }

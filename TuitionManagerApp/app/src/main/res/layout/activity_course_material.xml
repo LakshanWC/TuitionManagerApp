@@ -131,19 +131,10 @@
         android:gravity="center_vertical"
         android:layout_marginBottom="16dp">
 
-        <Button
-            android:id="@+id/btnClearAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/negative_red"
-            android:textColor="@android:color/white"
-            android:text="Clear All"
-            android:layout_marginEnd="12dp" />
 
         <Button
             android:id="@+id/btnHome"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="goHome"

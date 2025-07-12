@@ -253,4 +253,8 @@ public class Result extends AppCompatActivity {
                 });
     }
 
+    public void goToTHome(View view) {
+        NavigateUtil.goToTeacherHome(this);
+    }
+
 }

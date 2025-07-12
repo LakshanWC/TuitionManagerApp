@@ -304,7 +304,7 @@ public class Assignment extends AppCompatActivity {
         Log.e("AssignmentUpload", message);
     }
 
-    public void goHome(View view) {
+    public void goToMyTeacherHome(View view) {
         finish();
     }
 

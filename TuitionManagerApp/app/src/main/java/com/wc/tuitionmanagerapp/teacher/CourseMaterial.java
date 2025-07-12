@@ -111,8 +111,7 @@ public class CourseMaterial extends AppCompatActivity {
     }
 
     public void goHome(View view){
-        Intent goHomeIntent = new Intent(this, TeacherHome.class);
-        startActivity(goHomeIntent);
+            NavigateUtil.goToTeacherHome(this);
     }
 
     public void selectDocument(View view){
