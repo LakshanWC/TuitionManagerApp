@@ -2,6 +2,7 @@ package com.wc.tuitionmanagerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -100,5 +101,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(teacherHomeIntent);
             finish();
         }
+    }
+
+    public void exitHoleApp(View view){
+        finishAffinity(); //close all the activities
+        System.exit(0); //cloas the app
     }
 }
