@@ -125,7 +125,9 @@ public class StudentHome extends AppCompatActivity {
 
     // Keep your other goTo methods unchanged
     public void goToAssignments(View view) {
-        startActivity(new Intent(this, ViewAssignments.class));
+        Intent intent = new Intent(this, ViewAssignments.class);
+        intent.putExtra("username", studentName); // studentName should be the logged-in username
+        startActivity(intent);
     }
 
     public void goToResults(View view) {
