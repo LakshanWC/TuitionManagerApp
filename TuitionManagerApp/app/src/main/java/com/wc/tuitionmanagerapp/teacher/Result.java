@@ -31,6 +31,7 @@ public class Result extends AppCompatActivity {
     private Spinner stdSpinner;
     private Spinner courseSpinner;
     private Spinner marksSpinner;
+    private String CurrentcourseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,19 +170,87 @@ public class Result extends AppCompatActivity {
         stdSpinner.setAdapter(studentAdapter);
     }
 
+    private void getCourseIdFromName() {
+        String nameCourses = courseSpinner.getSelectedItem().toString();
+        firestoreDB.collection("courses")
+                .whereEqualTo("courseName", nameCourses)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0); // Get the first match
+                        CurrentcourseId = doc.getId(); // Document ID is your courseId
+                        Log.d("CourseQuery", "Course ID for " + nameCourses + ": " + CurrentcourseId);
+
+                        // Use courseId here (e.g., pass to another method)
+                    } else {
+                        Toast.makeText(this, "Course not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirestoreError", "Error fetching courseId: ", e);
+                    Toast.makeText(this, "Failed to get course ID", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
     // Method to handle submit button click (if you have one)
     public void onSubmitClick(View view) {
-        // Implement your submit logic here
         if (courseSpinner.getSelectedItem() == null || stdSpinner.getSelectedItem() == null || marksSpinner.getSelectedItem() == null) {
             Toast.makeText(this, "Please select all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String course = courseSpinner.getSelectedItem().toString();
-        String student = stdSpinner.getSelectedItem().toString();
-        String mark = marksSpinner.getSelectedItem().toString();
+        String courseName = courseSpinner.getSelectedItem().toString();
+        String studentId = stdSpinner.getSelectedItem().toString();
+        String selectedGrade = marksSpinner.getSelectedItem().toString();
 
-        // TODO: Implement your Firestore update logic here
-        Toast.makeText(this, "Result submitted for " + student + ": " + mark, Toast.LENGTH_SHORT).show();
+        // Step 1: Get courseId from courseName
+        firestoreDB.collection("courses")
+                .whereEqualTo("courseName", courseName)
+                .get()
+                .addOnSuccessListener(courseQuery -> {
+                    if (!courseQuery.isEmpty()) {
+                        DocumentSnapshot courseDoc = courseQuery.getDocuments().get(0);
+                        String courseId = courseDoc.getId();  // Get courseId from document ID
+
+                        // Step 2: Query submitted_assignments for ungraded submission
+                        firestoreDB.collection("submitted_assignments")
+                                .whereEqualTo("studentId", studentId)
+                                .whereEqualTo("courseId", courseId)
+                                .whereEqualTo("grade", "") // grade not yet assigned
+                                .get()
+                                .addOnSuccessListener(querySnapshot -> {
+                                    if (!querySnapshot.isEmpty()) {
+                                        DocumentSnapshot submissionDoc = querySnapshot.getDocuments().get(0);
+
+                                        // Step 3: Update grade field
+                                        firestoreDB.collection("submitted_assignments")
+                                                .document(submissionDoc.getId())
+                                                .update("grade", selectedGrade, "status", "graded")
+                                                .addOnSuccessListener(unused -> {
+                                                    Toast.makeText(this, "Grade submitted successfully", Toast.LENGTH_SHORT).show();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Toast.makeText(this, "Failed to update grade", Toast.LENGTH_SHORT).show();
+                                                    Log.e("FirestoreUpdate", "Error updating grade: ", e);
+                                                });
+                                    } else {
+                                        Toast.makeText(this, "No ungraded submission found for this student", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Failed to find submitted assignment", Toast.LENGTH_SHORT).show();
+                                    Log.e("FirestoreQuery", "Error querying submitted_assignments: ", e);
+                                });
+
+                    } else {
+                        Toast.makeText(this, "Course not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to fetch course ID", Toast.LENGTH_SHORT).show();
+                    Log.e("FirestoreCourse", "Error fetching courseId: ", e);
+                });
     }
+
 }
