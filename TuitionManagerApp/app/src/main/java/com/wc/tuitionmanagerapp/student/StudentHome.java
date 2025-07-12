@@ -126,7 +126,9 @@ public class StudentHome extends AppCompatActivity {
     }
 
     public void goToResults(View view) {
-        startActivity(new Intent(this, ViewResults.class));
+        Intent intent = new Intent(this, ViewResults.class);
+        intent.putExtra("username", studentName); // studentName is from your existing code
+        startActivity(intent);
     }
 
     public void goToCourseMaterials(View view) {
@@ -180,5 +182,6 @@ public class StudentHome extends AppCompatActivity {
             }
         });
     }
+
 
 }

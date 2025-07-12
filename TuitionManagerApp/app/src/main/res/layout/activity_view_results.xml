@@ -5,10 +5,9 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your Results"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/resultsChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>
