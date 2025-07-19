@@ -1,5 +1,7 @@
 package com.wc.tuitionmanagerapp.teacher;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,6 +99,15 @@ public class DeleteCourseMaterials extends AppCompatActivity {
 
     public void goToMyTHome(View view) {
         NavigateUtil.goToTeacherHome(this);
+    }
+
+    public void onDriveSignInFailed(Exception e) {
+        Log.e(TAG, "Drive sign-in failed", e);
+        runOnUiThread(() -> {
+            // Show error to user
+            Toast.makeText(this, "Failed to sign in to Google Drive: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        });
     }
 
     private void getCourseNames() {

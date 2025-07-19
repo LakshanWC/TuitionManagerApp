@@ -1,10 +1,14 @@
 package com.wc.tuitionmanagerapp.teacher;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -150,6 +154,8 @@ public class TeacherHome extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("TeacherHome", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             googleDriveHelper.handleSignInResult(data);
         }
@@ -164,5 +170,14 @@ public class TeacherHome extends AppCompatActivity {
     public void exitApp(View view){
         finishAffinity();
         System.exit(0);
+    }
+
+    public void onDriveSignInFailed(Exception e) {
+        Log.e(TAG, "Drive sign-in failed", e);
+        runOnUiThread(() -> {
+            // Show error to user
+            Toast.makeText(this, "Failed to sign in to Google Drive: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        });
     }
 }
