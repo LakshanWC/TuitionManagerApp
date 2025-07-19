@@ -2,6 +2,7 @@ package com.wc.tuitionmanagerapp.teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.Scope;
+import com.google.api.services.drive.DriveScopes;
 import com.wc.tuitionmanagerapp.R;
 
 public class ManageCourseMaterials extends AppCompatActivity {
@@ -39,13 +42,13 @@ public class ManageCourseMaterials extends AppCompatActivity {
 
     private void checkIfAlreadySignedIn() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
+        if (account != null && account.getGrantedScopes().contains(new Scope(DriveScopes.DRIVE_FILE))) {
             isDriveServiceReady = true;
             googleDriveHelper.setGoogleAccount(account);
+            Log.d("ManageCourse", "Drive service ready");
         } else {
             isDriveServiceReady = false;
-            // Optional: prompt user to sign in now or when needed
-            // signInToDrive();
+            Log.d("ManageCourse", "Drive service not ready");
         }
     }
 
@@ -53,6 +56,8 @@ public class ManageCourseMaterials extends AppCompatActivity {
     public void signInToDrive() {
         googleDriveHelper.signIn();
     }
+
+
 
     // Make sure to forward activity result to googleDriveHelper so it can handle sign-in response
     @Override
@@ -76,15 +81,37 @@ public class ManageCourseMaterials extends AppCompatActivity {
     }
 
     public void goToUploadMaterials(View view) {
-        if (isDriveServiceReady) {
+        if (isDriveServiceReady && googleDriveHelper.getDriveService() != null) {
             Intent uploadIntent = new Intent(this, CourseMaterial.class);
             startActivity(uploadIntent);
         } else {
             Toast.makeText(this, "Please sign in to Google Drive first", Toast.LENGTH_SHORT).show();
             signInToDrive();
+
+            // Implement the full callback interface
+            googleDriveHelper.setSignInCallback(new GoogleDriveHelper.SignInCallback() {
+                @Override
+                public void onSignInSuccess(GoogleSignInAccount account) {
+                    runOnUiThread(() -> {
+                        isDriveServiceReady = true;
+                        Toast.makeText(ManageCourseMaterials.this,
+                                "Google Drive signed in", Toast.LENGTH_SHORT).show();
+                        Intent uploadIntent = new Intent(ManageCourseMaterials.this, CourseMaterial.class);
+                        startActivity(uploadIntent);
+                    });
+                }
+
+                @Override
+                public void onSignInFailure(Exception e) {
+                    runOnUiThread(() -> {
+                        isDriveServiceReady = false;
+                        Toast.makeText(ManageCourseMaterials.this,
+                                "Sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
         }
     }
-
     public void goToDeleteMaterials(View view) {
         if (isDriveServiceReady) {
             Intent deleteIntent = new Intent(this, DeleteCourseMaterials.class);

@@ -26,33 +26,77 @@ import com.google.api.services.drive.model.Permission;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class GoogleDriveHelper {
     private static final String TAG = "GoogleDriveHelper";
-    private static final Scope DRIVE_SCOPE = new Scope(DriveScopes.DRIVE_FILE);
+    private static final List<Scope> DRIVE_SCOPES = Arrays.asList(
+            new Scope(DriveScopes.DRIVE_FILE),
+            new Scope(DriveScopes.DRIVE_METADATA),
+            new Scope(DriveScopes.DRIVE)
+    );
+
+    public interface SignInCallback {
+        void onSignInSuccess(GoogleSignInAccount account);
+        void onSignInFailure(Exception e);
+    }
 
     private final Context context;
     private final Executor executor = Executors.newSingleThreadExecutor();
     private GoogleSignInAccount googleAccount;
     private Drive driveService;
+    private SignInCallback signInCallback;
 
     public GoogleDriveHelper(Context context) {
         this.context = context;
     }
 
+
+
     public Drive getDriveService() {
         return driveService;
     }
 
+    public GoogleSignInAccount getGoogleAccount() {
+        return googleAccount;
+    }
+
+    public boolean isConnected() {
+        return googleAccount != null && driveService != null;
+    }
+
+    public void setSignInCallback(SignInCallback callback) {
+        this.signInCallback = callback;
+    }
 
     public void signIn() {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestScopes(DRIVE_SCOPE)
+                .requestScopes(DRIVE_SCOPES.get(0), DRIVE_SCOPES.get(1), DRIVE_SCOPES.get(2))
                 .build();
+
+        GoogleSignInAccount alreadySignedInAccount = GoogleSignIn.getLastSignedInAccount(context);
+
+        if (alreadySignedInAccount != null) {
+            boolean hasAllScopes = true;
+            for (Scope scope : DRIVE_SCOPES) {
+                if (!alreadySignedInAccount.getGrantedScopes().contains(scope)) {
+                    hasAllScopes = false;
+                    break;
+                }
+            }
+
+            if (hasAllScopes) {
+                Log.d(TAG, "Already signed in as " + alreadySignedInAccount.getEmail());
+                setGoogleAccount(alreadySignedInAccount);
+                notifySignInSuccess();
+                return;
+            }
+        }
 
         GoogleSignInClient client = GoogleSignIn.getClient(context, signInOptions);
 
@@ -61,26 +105,54 @@ public class GoogleDriveHelper {
             activity.startActivityForResult(client.getSignInIntent(), 1002);
         } else {
             Log.e(TAG, "Context is not an activity. Cannot start sign-in.");
+            notifySignInFailure(new IllegalStateException("Context is not an activity"));
         }
     }
 
     public void handleSignInResult(Intent result) {
+        if (result == null) {
+            Exception e = new NullPointerException("Sign-in result intent is null");
+            Log.e(TAG, "Sign-in failed", e);
+            notifySignInFailure(e);
+            return;
+        }
+
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(account -> {
                     Log.d(TAG, "Signed in as " + account.getEmail());
-
-                    // ✅ Correctly initialize Google account and Drive service
                     setGoogleAccount(account);
-
-                    // 🔄 Notify the relevant screen (activity) of sign-in completion
-                    if (context instanceof TeacherHome) {
-                        ((TeacherHome) context).onDriveSignInComplete();
-                    } else if (context instanceof DeleteCourseMaterials) {
-                        ((DeleteCourseMaterials) context).onDriveSignInComplete();
-                    }
-
+                    notifySignInSuccess();
                 })
-                .addOnFailureListener(e -> Log.e(TAG, "Unable to sign in.", e));
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Unable to sign in", e);
+                    notifySignInFailure(e);
+                });
+    }
+
+    private void notifySignInSuccess() {
+        if (signInCallback != null) {
+            signInCallback.onSignInSuccess(googleAccount);
+            signInCallback = null;
+        }
+
+        if (context instanceof TeacherHome) {
+            ((TeacherHome) context).onDriveSignInComplete();
+        } else if (context instanceof DeleteCourseMaterials) {
+            ((DeleteCourseMaterials) context).onDriveSignInComplete();
+        }
+    }
+
+    private void notifySignInFailure(Exception e) {
+        if (signInCallback != null) {
+            signInCallback.onSignInFailure(e);
+            signInCallback = null;
+        }
+
+        if (context instanceof TeacherHome) {
+            ((TeacherHome) context).onDriveSignInFailed(e);
+        } else if (context instanceof DeleteCourseMaterials) {
+            ((DeleteCourseMaterials) context).onDriveSignInFailed(e);
+        }
     }
 
     public void setGoogleAccount(GoogleSignInAccount account) {
@@ -101,7 +173,7 @@ public class GoogleDriveHelper {
     public Intent getSignInIntent() {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestScopes(DRIVE_SCOPE)
+                .requestScopes(DRIVE_SCOPES.get(0), DRIVE_SCOPES.get(1), DRIVE_SCOPES.get(2))
                 .build();
 
         GoogleSignInClient client = GoogleSignIn.getClient(context, signInOptions);
@@ -110,52 +182,78 @@ public class GoogleDriveHelper {
 
     public Task<String> uploadFileToDrive(Uri fileUri, String fileName, String mimeType, String parentFolderId) {
         return Tasks.call(executor, () -> {
-            InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
-            if (inputStream == null) {
-                throw new IOException("Cannot open file input stream");
+            try {
+                if (driveService == null) {
+                    throw new IllegalStateException("Drive service not initialized");
+                }
+
+                InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
+                if (inputStream == null) {
+                    throw new IOException("Cannot open file input stream");
+                }
+
+                File fileMetadata = new File();
+                fileMetadata.setName(fileName);
+                fileMetadata.setMimeType(mimeType);
+                if (parentFolderId != null && !parentFolderId.isEmpty()) {
+                    fileMetadata.setParents(Collections.singletonList(parentFolderId));
+                }
+
+                InputStreamContent mediaContent = new InputStreamContent(mimeType, inputStream);
+                return driveService.files().create(fileMetadata, mediaContent)
+                        .setFields("id")
+                        .execute()
+                        .getId();
+            } catch (Exception e) {
+                Log.e(TAG, "Error uploading file", e);
+                throw e;
             }
-
-            File fileMetadata = new File();
-            fileMetadata.setName(fileName);
-            fileMetadata.setMimeType(mimeType);
-            fileMetadata.setParents(Collections.singletonList(parentFolderId));
-
-            InputStreamContent mediaContent = new InputStreamContent(mimeType, inputStream);
-            Drive.Files.Create createFile = driveService.files().create(fileMetadata, mediaContent);
-
-            File uploadedFile = createFile.execute();
-            return uploadedFile.getId();
         });
     }
 
     public Task<String> getOrCreateFolder(String folderName) {
         return Tasks.call(executor, () -> {
-            String query = "mimeType='application/vnd.google-apps.folder' and name='" + folderName + "' and trashed=false";
-            Drive.Files.List listRequest = driveService.files().list()
-                    .setQ(query)
-                    .setSpaces("drive")
-                    .setFields("files(id,name)");
+            try {
+                if (driveService == null) {
+                    throw new IllegalStateException("Drive service not initialized");
+                }
 
-            FileList fileList = listRequest.execute();
-            if (!fileList.getFiles().isEmpty()) {
-                return fileList.getFiles().get(0).getId();
+                String query = "mimeType='application/vnd.google-apps.folder' and name='" +
+                        folderName + "' and trashed=false";
+
+                FileList fileList = driveService.files().list()
+                        .setQ(query)
+                        .setSpaces("drive")
+                        .setFields("files(id,name)")
+                        .execute();
+
+                if (!fileList.getFiles().isEmpty()) {
+                    return fileList.getFiles().get(0).getId();
+                }
+
+                File folderMetadata = new File();
+                folderMetadata.setName(folderName);
+                folderMetadata.setMimeType("application/vnd.google-apps.folder");
+
+                File folder = driveService.files().create(folderMetadata)
+                        .setFields("id")
+                        .execute();
+
+                return folder.getId();
+            } catch (Exception e) {
+                Log.e(TAG, "Error creating folder", e);
+                throw e;
             }
-
-            File folderMetadata = new File();
-            folderMetadata.setName(folderName);
-            folderMetadata.setMimeType("application/vnd.google-apps.folder");
-
-            File folder = driveService.files().create(folderMetadata)
-                    .setFields("id")
-                    .execute();
-
-            return folder.getId();
         });
     }
 
     public Task<String> getFolderShareableLink(String folderId) {
         return Tasks.call(executor, () -> {
             try {
+                if (driveService == null) {
+                    throw new IllegalStateException("Drive service not initialized");
+                }
+
                 Permission userPermission = new Permission()
                         .setType("anyone")
                         .setRole("reader");
@@ -174,9 +272,17 @@ public class GoogleDriveHelper {
 
     public Task<Void> deleteFile(String fileId) {
         return Tasks.call(executor, () -> {
-            driveService.files().delete(fileId).execute();
-            return null;
+            try {
+                if (driveService == null) {
+                    throw new IllegalStateException("Drive service not initialized");
+                }
+
+                driveService.files().delete(fileId).execute();
+                return null;
+            } catch (Exception e) {
+                Log.e(TAG, "Error deleting file", e);
+                throw e;
+            }
         });
     }
-
 }

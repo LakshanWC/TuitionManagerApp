@@ -27,6 +27,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.Scope;
+import com.google.api.services.drive.DriveScopes;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -67,6 +69,11 @@ public class CourseMaterial extends AppCompatActivity {
         // Initialize Google Drive Helper
         googleDriveHelper = new GoogleDriveHelper(this);
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null && account.getGrantedScopes().contains(new Scope(DriveScopes.DRIVE_FILE))) {
+            isDriveServiceReady = true;
+            googleDriveHelper.setGoogleAccount(account);
+        }
 
         firestoreDB = FirebaseFirestore.getInstance();
         teacherUID = getSharedPreferences("user_prefs", MODE_PRIVATE)
