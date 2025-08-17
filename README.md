@@ -5,9 +5,8 @@ A comprehensive Android application for tuition centers to manage students, teac
 
 ✨ Key Features
 
-👨‍💼 Admin Features:
-📝 User management (register/view/delete users)
-📚 Course management (add/remove courses)
+👨‍💼 Admin Features:📝 User management (register/view/delete users)
+                  📚 Course management (add/remove courses)
 👨‍🏫 Assign teachers to courses
 🎓 Assign students to courses
 📊 View reports (attendance, results, course distribution)
